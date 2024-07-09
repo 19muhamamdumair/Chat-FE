@@ -19,6 +19,14 @@ export const users = [
   { id: 6, username: "parent3" }
 ];
 
+// export const messages =[
+//   {
+//     oConversations:conversations,
+//     sender:ChatList,
+//     content:String
+//   }
+// ]
+
 export const conversations = [
   {
     id: 1,
@@ -202,131 +210,11 @@ const ChatList = [
     time: "9:36",
     unread: 0,
     messages: [
-      { id: 1, type: "msg", message: "Hey, are you coming to the meeting?", incoming: true, outgoing: false },
+      { id: 1, type: "msg", message: "Testing", incoming: true, outgoing: false },
       { id: 2, type: "divider", text: "Today" },
       { id: 3, type: "msg", message: "Yes, I'll be there in 10 minutes.", incoming: false, outgoing: true }
     ]
-  },
-  {
-    id: 0,
-    img: faker.image.avatar(),
-    name: faker.name.firstName(),
-    msg: faker.music.songName(),
-    time: "9:36",
-    unread: 0,
-    pinned: true,
-    online: true,
-    messages: [
-      { id: 1, type: "msg", message: "Hey, are you coming to the meeting?", incoming: true, outgoing: false },
-      { id: 2, type: "divider", text: "Today" },
-      { id: 3, type: "msg", message: "Yes, I'll be there in 10 minutes.", incoming: false, outgoing: true }
-    ]
-  },
-  {
-    id: 1,
-    img: faker.image.avatar(),
-    name: faker.name.firstName(),
-    msg: faker.music.songName(),
-    time: "12:02",
-    unread: 2,
-    pinned: true,
-    online: false,
-    messages: [
-      { id: 1, type: "msg", message: "Hey, are you coming to the meeting?", incoming: true, outgoing: false },
-      { id: 2, type: "divider", text: "Today" },
-      { id: 3, type: "msg", message: "Yes, I'll be there in 10 minutes.", incoming: false, outgoing: true }
-    ]
-  },
-  {
-    id: 2,
-    img: faker.image.avatar(),
-    name: faker.name.firstName(),
-    msg: faker.music.songName(),
-    time: "10:35",
-    unread: 3,
-    pinned: false,
-    online: true,
-    messages: [
-      { id: 1, type: "msg", message: "Hey, are you coming to the meeting?", incoming: true, outgoing: false },
-      { id: 2, type: "divider", text: "Today" },
-      { id: 3, type: "msg", message: "Yes, I'll be there in 10 minutes.", incoming: false, outgoing: true }
-    ]
-  },
-  {
-    id: 3,
-    img: faker.image.avatar(),
-    name: faker.name.firstName(),
-    msg: faker.music.songName(),
-    time: "04:00",
-    unread: 0,
-    pinned: false,
-    online: true,
-    messages: [
-      { id: 1, type: "msg", message: "Hey, are you coming to the meeting?", incoming: true, outgoing: false },
-      { id: 2, type: "divider", text: "Today" },
-      { id: 3, type: "msg", message: "Yes, I'll be there in 10 minutes.", incoming: false, outgoing: true }
-    ]
-  },
-  {
-    id: 4,
-    img: faker.image.avatar(),
-    name: faker.name.firstName(),
-    msg: faker.music.songName(),
-    time: "08:42",
-    unread: 0,
-    pinned: false,
-    online: false,
-    messages: [
-      { id: 1, type: "msg", message: "Hey, are you coming to the meeting?", incoming: true, outgoing: false },
-      { id: 2, type: "divider", text: "Today" },
-      { id: 3, type: "msg", message: "Yes, I'll be there in 10 minutes.", incoming: false, outgoing: true }
-    ]
-  },
-  {
-    id: 5,
-    img: faker.image.avatar(),
-    name: faker.name.firstName(),
-    msg: faker.music.songName(),
-    time: "08:42",
-    unread: 0,
-    pinned: false,
-    online: false,
-    messages: [
-      { id: 1, type: "msg", message: "Hey, are you coming to the meeting?", incoming: true, outgoing: false },
-      { id: 2, type: "divider", text: "Today" },
-      { id: 3, type: "msg", message: "Yes, I'll be there in 10 minutes.", incoming: false, outgoing: true }
-    ]
-  },
-  {
-    id: 6,
-    img: faker.image.avatar(),
-    name: faker.name.firstName(),
-    msg: faker.music.songName(),
-    time: "08:42",
-    unread: 0,
-    pinned: false,
-    online: false,
-    messages: [
-      { id: 1, type: "msg", message: "Hey, are you coming to the meeting?", incoming: true, outgoing: false },
-      { id: 2, type: "divider", text: "Today" },
-      { id: 3, type: "msg", message: "Yes, I'll be there in 10 minutes.", incoming: false, outgoing: true }
-    ]
-  },
-  {
-    id: 7,
-    img: faker.image.avatar(),
-    name: faker.name.firstName(),
-    msg: faker.music.songName(),
-    time: "08:42",
-    unread: 0,
-    pinned: false,
-    online: false,
-    messages: [
-      { id: 1, type: "msg", message: "Hey, are you coming to the meeting?", incoming: true, outgoing: false },
-      { id: 2, type: "divider", text: "Today" },
-      { id: 3, type: "msg", message: "Yes, I'll be there in 10 minutes.", incoming: false, outgoing: true }
-    ]
-  },
+  }
 ];
 
 const Chat_History = [

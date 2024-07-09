@@ -9,6 +9,9 @@ import ChatElement from '../../components/ChatElement';
 
 const Chats = ({ setSelectedChat }) => {
   const theme = useTheme();
+
+
+  
   return (
     <Box sx={{
       position: "relative", width: 320,
@@ -40,7 +43,13 @@ const Chats = ({ setSelectedChat }) => {
               All Therapists
             </Typography>
             {ChatList.filter((el) => !el.pinned).map((el) => (
-              <ChatElement key={el.id} {...el} onClick={() => setSelectedChat(el)} />
+              <ChatElement key={el.id} {...el} onClick={() => 
+              {
+                // debugger
+                setSelectedChat(el)
+              }
+                
+               } />
             ))}
           </Stack>
         </Stack>

@@ -37,31 +37,8 @@ const Actions = [
     y: 102,
     title: "Photo/Video",
     action: "upload",
-  },
-  {
-    color: "#1b8cfe",
-    icon: <Sticker size={24} />,
-    y: 172,
-    title: "Stickers",
-  },
-  {
-    color: "#0172e4",
-    icon: <Camera size={24} />,
-    y: 242,
-    title: "Image",
-  },
-  {
-    color: "#0159b2",
-    icon: <File size={24} />,
-    y: 312,
-    title: "Document",
-  },
-  {
-    color: "#013f7f",
-    icon: <User size={24} />,
-    y: 382,
-    title: "Contact",
-  },
+  }
+  
 ];
 
 const ChatInput = ({ setOpenPicker, onSendMessage }) => {
@@ -71,14 +48,8 @@ const ChatInput = ({ setOpenPicker, onSendMessage }) => {
   const fileInputRef = useRef(null);
 
   const handleSend = () => {
-    if (message.trim() !== "" || mediaPreview !== null) {
-      const formData = new FormData();
-      if (mediaPreview) {
-        formData.append("file", mediaPreview.file); // Append the file to FormData
-      }
-      formData.append("message", message.trim());
-
-      onSendMessage(formData); // Send the FormData
+    if (message.trim() !== "" || mediaPreview) {
+      onSendMessage({ text: message, media: mediaPreview });
       setMessage("");
       setMediaPreview(null);
     }
@@ -141,7 +112,7 @@ const ChatInput = ({ setOpenPicker, onSendMessage }) => {
                   type="file"
                   ref={fileInputRef}
                   style={{ display: "none" }}
-                  accept="image/,video/"
+                  accept="image/*,video/*"
                   onChange={handleFileChange}
                 />
               </Stack>
@@ -152,13 +123,13 @@ const ChatInput = ({ setOpenPicker, onSendMessage }) => {
               </InputAdornment>
             </Stack>
           ),
-          endAdornment: (
-            <InputAdornment>
-              <IconButton onClick={() => setOpenPicker((prev) => !prev)}>
-                <Smiley />
-              </IconButton>
-            </InputAdornment>
-          ),
+          // endAdornment: (
+          //   <InputAdornment>
+          //     <IconButton onClick={() => setOpenPicker((prev) => !prev)}>
+          //       <Smiley />
+          //     </IconButton>
+          //   </InputAdornment>
+          // ),
         }}
       />
       {mediaPreview && (
@@ -213,8 +184,12 @@ const Footer = ({ onSendMessage }) => {
             borderRadius: 1.5,
           }}
         >
-          <IconButton
-            onClick={() => onSendMessage("")} // Modify this part to correctly send messages
+           <IconButton
+            onClick={() =>
+              document
+                .querySelector('input[placeholder="Write a message..."]')
+                .dispatchEvent(new KeyboardEvent("keypress", { key: "Enter" }))
+            } // Trigger send message
             sx={{
               height: "100%",
               width: "100%",
@@ -226,7 +201,7 @@ const Footer = ({ onSendMessage }) => {
           </IconButton>
         </Box>
       </Stack>
-      {openPicker && (
+      {/* {openPicker && (
         <Box
           sx={{
             display: "inline",
@@ -242,7 +217,7 @@ const Footer = ({ onSendMessage }) => {
             onEmojiSelect={(emoji) => console.log(emoji)}
           />
         </Box>
-      )}
+      )} */}
     </Box>
   );
 };
