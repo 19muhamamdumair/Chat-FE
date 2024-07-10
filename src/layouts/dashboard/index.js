@@ -1,6 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { Stack } from '@mui/material';
-import SideBar from "./SideBar";
 
 const isAuthenticated = true;
 
@@ -12,8 +11,6 @@ if(!isAuthenticated){
 
   return (
     <Stack direction='row'>
-      {/* SideBar */}
-      {/* <SideBar/> */}
       <Outlet />
     </Stack>
     

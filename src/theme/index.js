@@ -13,7 +13,7 @@ import useSettings from "../hooks/useSettings.js";
 import palette from "./palette";
 import typography from "./typography";
 import breakpoints from "./breakpoints";
-import componentsOverride from "./overrides";
+// import componentsOverride from "./overrides";
 import shadows, { customShadows } from "./shadows";
 
 // ----------------------------------------------------------------------
@@ -42,7 +42,7 @@ export default function ThemeProvider({ children }) {
 
   const theme = createTheme(themeOptions);
 
-  theme.components = componentsOverride(theme);
+  // theme.components = componentsOverride(theme);
 
   return (
     <StyledEngineProvider injectFirst>

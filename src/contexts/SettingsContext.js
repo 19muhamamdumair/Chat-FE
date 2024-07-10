@@ -2,10 +2,10 @@
 import { createContext, useEffect } from "react";
 import { defaultSettings } from "../config";
 import useLocalStorage from "../hooks/useLocalStorage";
-import getColorPresets, {
-  defaultPreset,
-  colorPresets,
-} from "../utils/getColorPresets";
+// import getColorPresets, {
+//   defaultPreset,
+//   colorPresets,
+// } from "../utils/getColorPresets";
 
 const initialState = {
   ...defaultSettings,
@@ -29,7 +29,7 @@ const initialState = {
 
   // Color
   onChangeColor: () => {},
-  setColor: defaultPreset,
+  // setColor: defaultPreset,
   colorOption: [],
 
   // Stretch
@@ -188,11 +188,11 @@ const SettingsProvider = ({ children }) => {
 
         // Color
         onChangeColor,
-        setColor: getColorPresets(settings.themeColorPresets),
-        colorOption: colorPresets.map((color) => ({
-          name: color.name,
-          value: color.main,
-        })),
+        // setColor: getColorPresets(settings.themeColorPresets),
+        // colorOption: colorPresets.map((color) => ({
+        //   name: color.name,
+        //   value: color.main,
+        // })),
 
         // Reset
         onResetSetting,
