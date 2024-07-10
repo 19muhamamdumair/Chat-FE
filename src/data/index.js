@@ -195,10 +195,10 @@ const ChatList = [
     pinned: false,
     time: "9:36",
     messages: [
-      { id: 1, type: "msg", message: "Can you send me the report?", incoming: true, outgoing: false },
-      { id: 2, type: "divider", text: "Yesterday" },
-      { id: 3, type: "msg", message: "Sure, I will send it by EOD.", incoming: false, outgoing: true },
-      { id: 4, type: "msg", message: "Thanks!", incoming: true, outgoing: false }
+      // { id: 1, type: "msg", message: "Can you send me the report?", incoming: true, outgoing: false },
+      // { id: 2, type: "divider", text: "Yesterday" },
+      // { id: 3, type: "msg", message: "Sure, I will send it by EOD.", incoming: false, outgoing: true },
+      // { id: 4, type: "msg", message: "Thanks!", incoming: true, outgoing: false }
     ]
   },
   {

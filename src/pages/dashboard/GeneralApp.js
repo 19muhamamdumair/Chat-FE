@@ -12,16 +12,16 @@ import ChatRequests from "../../components/Conversation/ChatRequests";
 
 const GeneralApp = () => {
   const theme = useTheme();
-  const { sidebar, user } = useSelector((store) => store.app); // access our store inside component
+  const { sidebar } = useSelector((store) => store.app); // access our store inside component
   const [selectedChat, setSelectedChat] = useState(null);
   const [isAwaitingApproval, setIsAwaitingApproval] = useState(false);
   const [chatRequests, setChatRequests] = useState([]);
 
-  useEffect(() => {
-    if (user.role === 'therapist') {
-      fetchChatRequests();
-    }
-  }, [user.role]);
+  // useEffect(() => {
+  //   if (user.role === 'therapist') {
+  //     fetchChatRequests();
+  //   }
+  // }, [user.role]);
 
   const fetchChatRequests = async () => {
     const response = await fetch('/api/chat-requests/');
@@ -100,9 +100,9 @@ const GeneralApp = () => {
           }
         })()}
       {/* Chat Requests for Therapists */}
-      {user.role === 'therapist' && (
+      {/* {user.role === 'therapist' && (
         <ChatRequests requests={chatRequests} onApprove={handleApproveRequest} />
-      )}
+      )} */}
     </Stack>
   );
 };

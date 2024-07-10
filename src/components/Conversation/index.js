@@ -38,7 +38,7 @@ const Conversation = ({ selectedChat, onRequestConversation }) => {
     // if (!chatHistory || !chatHistory.messages || chatHistory.messages.length === 0) {
 
     return (
-      <Box p={3} display="flex" justifyContent="center" alignItems="center" height="100%">
+      <Box p={3} display="flex" justifyContent="center"  height="100%">
         <Stack spacing={3} alignItems="center">
           <Typography variant="h6">No chat history found.</Typography>
           <Button variant="contained" color="primary" onClick={onRequestConversation}>
@@ -55,15 +55,16 @@ const Conversation = ({ selectedChat, onRequestConversation }) => {
 
   return (
     <Stack height={'100%'} maxHeight={'100vh'} width={'auto'}>
-      {/* Chat header */}
       {selectedChat ? <Header selectedChat={selectedChat} /> : ""}
-      {/* Msg */}
       <Box className='scrollbar' width={"100%"} sx={{ flexGrow: 1, height: '100%', overflowY: 'scroll' }}>
-        {/* <Message chatHistory={chatHistory} /> */}
-        {selectedChat ? <Message chatHistory={selectedChat} menu={true} onRequestConversation={onRequestConversation} /> : <Typography variant='h6'>Select a chat to start messaging</Typography>}
+        {selectedChat ? <Message chatHistory={selectedChat} menu={true} onRequestConversation={onRequestConversation} /> : 
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <Typography variant='h6'>
+            Select a therapist for consultation
+          </Typography>
+        </Box>}
       </Box>
-      {/* Chat footer */}
-      {selectedChat && selectedChat.messages && selectedChat.messages.length > 0 ? <Footer onSendMessage={handleSendMessage} /> : requestChat()}
+      {selectedChat === null ? "" : selectedChat && selectedChat.messages && selectedChat.messages.length > 0 ? <Footer onSendMessage={handleSendMessage} /> : requestChat()}
     </Stack>
   );
 };
