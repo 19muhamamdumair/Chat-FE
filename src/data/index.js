@@ -177,13 +177,13 @@ const ChatList = [
     img: "https://via.placeholder.com/150",
     online: true,
     unread: 2,
-    pinned: false,
+    conversationRequest: false,
     time: "9:36",
     messages: [
-      { id: 1, type: "msg", message: "Hi 👋🏻, How are you?", incoming: true, outgoing: false },
-      { id: 2, type: "divider", text: "Today" },
-      { id: 3, type: "msg", message: "Hi John, I am good. How about you?", incoming: false, outgoing: true },
-      { id: 4, type: "msg", message: "I'm great, thanks for asking!", incoming: true, outgoing: false }
+      // { id: 1, type: "msg", message: "Hi 👋🏻, How are you?", incoming: true, outgoing: false },
+      // { id: 2, type: "divider", text: "Today" },
+      // { id: 3, type: "msg", message: "Hi John, I am good. How about you?", incoming: false, outgoing: true },
+      // { id: 4, type: "msg", message: "I'm great, thanks for asking!", incoming: true, outgoing: false }
     ]
   },
   {
@@ -192,13 +192,13 @@ const ChatList = [
     img: "https://via.placeholder.com/150",
     online: false,
     unread: 1,
-    pinned: false,
+    conversationRequest: false,
     time: "9:36",
     messages: [
-      // { id: 1, type: "msg", message: "Can you send me the report?", incoming: true, outgoing: false },
-      // { id: 2, type: "divider", text: "Yesterday" },
-      // { id: 3, type: "msg", message: "Sure, I will send it by EOD.", incoming: false, outgoing: true },
-      // { id: 4, type: "msg", message: "Thanks!", incoming: true, outgoing: false }
+      { id: 1, type: "msg", message: "Can you send me the report?", incoming: true, outgoing: false },
+      { id: 2, type: "divider", text: "Yesterday" },
+      { id: 3, type: "msg", message: "Sure, I will send it by EOD.", incoming: false, outgoing: true },
+      { id: 4, type: "msg", message: "Thanks!", incoming: true, outgoing: false }
     ]
   },
   {
@@ -206,7 +206,7 @@ const ChatList = [
     name: "Alex Johnson",
     img: "https://via.placeholder.com/150",
     online: true,
-    pinned: false,
+    conversationRequest: false,
     time: "9:36",
     unread: 0,
     messages: [
@@ -217,6 +217,53 @@ const ChatList = [
   }
 ];
 
+
+// const ChatList = [
+//   {
+//     id: 1,
+//     name: "John Doe",
+//     img: "https://via.placeholder.com/150",
+//     online: true,
+//     unread: 2,
+//     conversationRequest: true,
+//     time: "9:36",
+//     messages: [
+//       { id: 1, type: "msg", message: "Hi 👋🏻, How are you?", incoming: true, outgoing: false },
+//       { id: 2, type: "divider", text: "Today" },
+//       { id: 3, type: "msg", message: "Hi John, I am good. How about you?", incoming: false, outgoing: true },
+//       { id: 4, type: "msg", message: "I'm great, thanks for asking!", incoming: true, outgoing: false }
+//     ]
+//   },
+//   {
+//     id: 2,
+//     name: "Jane Smith",
+//     img: "https://via.placeholder.com/150",
+//     online: false,
+//     unread: 1,
+//     conversationRequest: false,
+//     time: "9:36",
+//     messages: [
+//       // { id: 1, type: "msg", message: "Can you send me the report?", incoming: true, outgoing: false },
+//       // { id: 2, type: "divider", text: "Yesterday" },
+//       // { id: 3, type: "msg", message: "Sure, I will send it by EOD.", incoming: false, outgoing: true },
+//       // { id: 4, type: "msg", message: "Thanks!", incoming: true, outgoing: false }
+//     ]
+//   },
+//   {
+//     id: 3,
+//     name: "Alex Johnson",
+//     img: "https://via.placeholder.com/150",
+//     online: true,
+//     conversationRequest: false,
+//     time: "9:36",
+//     unread: 0,
+//     messages: [
+//       { id: 1, type: "msg", message: "Testing", incoming: true, outgoing: false },
+//       { id: 2, type: "divider", text: "Today" },
+//       { id: 3, type: "msg", message: "Yes, I'll be there in 10 minutes.", incoming: false, outgoing: true }
+//     ]
+//   }
+// ];
 const Chat_History = [
   {
     type: "msg",

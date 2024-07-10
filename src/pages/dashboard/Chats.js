@@ -9,9 +9,12 @@ import ChatElement from '../../components/ChatElement';
 
 const Chats = ({ setSelectedChat }) => {
   const theme = useTheme();
+  const user = {
+    role: 'therapist'
+  }
 
 
-  
+
   return (
     <Box sx={{
       position: "relative", width: 320,
@@ -39,22 +42,40 @@ const Chats = ({ setSelectedChat }) => {
 
         <Stack className='scrollbar' spacing={2} direction='column' sx={{ flexGrow: 1, overflow: 'scroll', height: '100%' }}>
           <Stack spacing={2.4}>
-            <Typography variant='subtitle2' sx={{ color: "#676767" }}>
-              All Therapists
-            </Typography>
-            {ChatList.filter((el) => !el.pinned).map((el) => (
-              <ChatElement key={el.id} {...el} onClick={() => 
-              {
+            {user.role === 'therapist' ?
+              <Stack spacing={2.4}>
+                {ChatList.filter((el) => el.conversationRequest).length > 0 ?
+                  < Typography variant='subtitle2' sx={{ color: "#676767" }}>
+                Requests
+              </Typography> : ""
+            }
+
+            {ChatList.filter((el) => el.conversationRequest).map((el) => (
+              <ChatElement key={el.id} {...el} onClick={() => {
                 // debugger
                 setSelectedChat(el)
               }
-                
-               } />
+
+              } />
             ))}
+
           </Stack>
+              : ""}
+          <Typography variant='subtitle2' sx={{ color: "#676767" }}>
+            {user.role === 'patient' ? "All Therapists" : "All Patients"}
+          </Typography>
+          {ChatList.filter((el) => !el.conversationRequest).map((el) => (
+            <ChatElement key={el.id} {...el} onClick={() => {
+              // debugger
+              setSelectedChat(el)
+            }
+
+            } />
+          ))}
         </Stack>
       </Stack>
-    </Box>
+    </Stack>
+    </Box >
   );
 };
 

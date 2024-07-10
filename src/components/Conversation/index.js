@@ -10,6 +10,10 @@ import { Chat_History as initialChatHistory } from "../../data"; // Make sure th
 const Conversation = ({ selectedChat, onRequestConversation }) => {
   const theme = useTheme();
 
+  const user={
+    role:'therapist'
+  }
+
   const [chatHistory, setChatHistory] = useState(selectedChat?.messages ? selectedChat : null);
 
   useEffect(()=>{
@@ -58,6 +62,22 @@ const Conversation = ({ selectedChat, onRequestConversation }) => {
     // }
   }
 
+  const acceptChat = () => {
+    // if (!chatHistory || !chatHistory.messages || chatHistory.messages.length === 0) {
+
+    return (
+      <Box p={3} display="flex" justifyContent="center"  height="100%">
+        <Stack spacing={3} alignItems="center">
+          {/* <Typography variant="h6">No chat history found.</Typography> */}
+          <Button variant="contained" color="primary" onClick={onRequestConversation}>
+            Accept Conversation Request from Patient
+          </Button>
+        </Stack>
+      </Box>
+    );
+    // }
+  }
+
 
 
 
@@ -68,11 +88,11 @@ const Conversation = ({ selectedChat, onRequestConversation }) => {
         {chatHistory ? <Message chatHistory={chatHistory} menu={true} onRequestConversation={onRequestConversation} /> : 
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
           <Typography variant='h6'>
-            Select a therapist for consultation
+            {user.role==="therapist"?"Select a patient to chat" : "Select a therapist for consultation"}
           </Typography>
         </Box>}
       </Box>
-      {chatHistory === null ? "" : chatHistory && chatHistory.messages && chatHistory.messages.length > 0 ? <Footer onSendMessage={handleSendMessage} /> : requestChat()}
+      {chatHistory === null ? "" : chatHistory && chatHistory.messages && chatHistory.messages.length > 0 ? <Footer onSendMessage={handleSendMessage} /> : user.role==='therapist'?acceptChat() : requestChat()}
     </Stack>
   );
 };
