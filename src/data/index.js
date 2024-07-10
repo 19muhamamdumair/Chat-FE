@@ -177,7 +177,8 @@ const ChatList = [
     img: "https://via.placeholder.com/150",
     online: true,
     unread: 2,
-    conversationRequest: false,
+    conversationRequest: true,
+    conversationClosed:false,
     time: "9:36",
     messages: [
       // { id: 1, type: "msg", message: "Hi 👋🏻, How are you?", incoming: true, outgoing: false },
@@ -193,6 +194,7 @@ const ChatList = [
     online: false,
     unread: 1,
     conversationRequest: false,
+    conversationClosed:false,
     time: "9:36",
     messages: [
       { id: 1, type: "msg", message: "Can you send me the report?", incoming: true, outgoing: false },
@@ -207,6 +209,7 @@ const ChatList = [
     img: "https://via.placeholder.com/150",
     online: true,
     conversationRequest: false,
+    conversationClosed:true,
     time: "9:36",
     unread: 0,
     messages: [

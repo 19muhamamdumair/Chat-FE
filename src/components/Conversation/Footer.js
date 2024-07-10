@@ -13,15 +13,8 @@ import { styled, useTheme } from "@mui/material/styles";
 import {
   LinkSimple,
   PaperPlaneTilt,
-  Smiley,
-  Camera,
-  File,
   Image as ImageIcon,
-  Sticker,
-  User,
 } from "phosphor-react";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
 
 const StyledInput = styled(TextField)(({ theme }) => ({
   "& .MuiInputBase-input": {

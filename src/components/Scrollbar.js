@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import SimpleBarReact from 'simplebar-react';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
@@ -38,10 +38,10 @@ const SimpleBarStyle = styled(SimpleBarReact)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-Scrollbar.propTypes = {
-  children: PropTypes.node.isRequired,
-  sx: PropTypes.object,
-};
+// Scrollbar.propTypes = {
+//   children: PropTypes.node.isRequired,
+//   sx: PropTypes.object,
+// };
 
 export default function Scrollbar({ children, sx, ...other }) {
   const userAgent = typeof navigator === 'undefined' ? 'SSR' : navigator.userAgent;

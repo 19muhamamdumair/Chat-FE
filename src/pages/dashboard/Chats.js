@@ -10,7 +10,7 @@ import ChatElement from '../../components/ChatElement';
 const Chats = ({ setSelectedChat }) => {
   const theme = useTheme();
   const user = {
-    role: 'therapist'
+    role: 'patient'
   }
 
 

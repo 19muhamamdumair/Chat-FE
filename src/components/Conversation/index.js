@@ -11,7 +11,7 @@ const Conversation = ({ selectedChat, onRequestConversation }) => {
   const theme = useTheme();
 
   const user={
-    role:'therapist'
+    role:'patient'
   }
 
   const [chatHistory, setChatHistory] = useState(selectedChat?.messages ? selectedChat : null);
@@ -83,7 +83,7 @@ const Conversation = ({ selectedChat, onRequestConversation }) => {
 
   return (
     <Stack height={'100%'} maxHeight={'100vh'} width={'auto'}>
-      {chatHistory ? <Header selectedChat={chatHistory} /> : ""}
+      {chatHistory ? <Header selectedChat={chatHistory} user={user}/> : ""}
       <Box className='scrollbar' width={"100%"} sx={{ flexGrow: 1, height: '100%', overflowY: 'scroll' }}>
         {chatHistory ? <Message chatHistory={chatHistory} menu={true} onRequestConversation={onRequestConversation} /> : 
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -92,7 +92,7 @@ const Conversation = ({ selectedChat, onRequestConversation }) => {
           </Typography>
         </Box>}
       </Box>
-      {chatHistory === null ? "" : chatHistory && chatHistory.messages && chatHistory.messages.length > 0 ? <Footer onSendMessage={handleSendMessage} /> : user.role==='therapist'?acceptChat() : requestChat()}
+      {chatHistory === null ||chatHistory.conversationClosed===true ? "" : chatHistory && chatHistory.messages && chatHistory.messages.length > 0 ? <Footer onSendMessage={handleSendMessage} /> : user.role==='therapist'?acceptChat() : requestChat()}
     </Stack>
   );
 };
