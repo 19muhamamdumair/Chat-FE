@@ -10,10 +10,15 @@ import { Chat_History as initialChatHistory } from "../../data"; // Make sure th
 const Conversation = ({ selectedChat, onRequestConversation }) => {
   const theme = useTheme();
 
-  const [chatHistory, setChatHistory] = useState(selectedChat?.messages);
+  const [chatHistory, setChatHistory] = useState(selectedChat?.messages ? selectedChat : null);
+
+  useEffect(()=>{
+    setChatHistory(selectedChat?.messages ? selectedChat : null)
+  },[selectedChat])
 
   const handleSendMessage = (messageData) => {
     const newMessage = {
+      id:chatHistory.messages[chatHistory.messages.length-1].id+1,
       type: "msg",
       message: messageData.text || "",
       incoming: false,
@@ -30,7 +35,10 @@ const Conversation = ({ selectedChat, onRequestConversation }) => {
       }
     }
 
-    setChatHistory((prevHistory) => [...prevHistory, newMessage]);
+    setChatHistory((prevHistory) => ({
+      ...prevHistory,
+      messages: [...prevHistory.messages, newMessage],
+    }));
   };
 
 
@@ -55,16 +63,16 @@ const Conversation = ({ selectedChat, onRequestConversation }) => {
 
   return (
     <Stack height={'100%'} maxHeight={'100vh'} width={'auto'}>
-      {selectedChat ? <Header selectedChat={selectedChat} /> : ""}
+      {chatHistory ? <Header selectedChat={chatHistory} /> : ""}
       <Box className='scrollbar' width={"100%"} sx={{ flexGrow: 1, height: '100%', overflowY: 'scroll' }}>
-        {selectedChat ? <Message chatHistory={selectedChat} menu={true} onRequestConversation={onRequestConversation} /> : 
+        {chatHistory ? <Message chatHistory={chatHistory} menu={true} onRequestConversation={onRequestConversation} /> : 
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
           <Typography variant='h6'>
             Select a therapist for consultation
           </Typography>
         </Box>}
       </Box>
-      {selectedChat === null ? "" : selectedChat && selectedChat.messages && selectedChat.messages.length > 0 ? <Footer onSendMessage={handleSendMessage} /> : requestChat()}
+      {chatHistory === null ? "" : chatHistory && chatHistory.messages && chatHistory.messages.length > 0 ? <Footer onSendMessage={handleSendMessage} /> : requestChat()}
     </Stack>
   );
 };

@@ -38,10 +38,9 @@ const Actions = [
     title: "Photo/Video",
     action: "upload",
   }
-  
 ];
 
-const ChatInput = ({ setOpenPicker, onSendMessage }) => {
+const ChatInput = ({ setOpenPicker, onSendMessage, handleSendRef }) => {
   const [openAction, setOpenAction] = useState(false);
   const [message, setMessage] = useState("");
   const [mediaPreview, setMediaPreview] = useState(null);
@@ -54,6 +53,10 @@ const ChatInput = ({ setOpenPicker, onSendMessage }) => {
       setMediaPreview(null);
     }
   };
+
+  React.useImperativeHandle(handleSendRef, () => ({
+    send: handleSend,
+  }));
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -123,13 +126,6 @@ const ChatInput = ({ setOpenPicker, onSendMessage }) => {
               </InputAdornment>
             </Stack>
           ),
-          // endAdornment: (
-          //   <InputAdornment>
-          //     <IconButton onClick={() => setOpenPicker((prev) => !prev)}>
-          //       <Smiley />
-          //     </IconButton>
-          //   </InputAdornment>
-          // ),
         }}
       />
       {mediaPreview && (
@@ -156,6 +152,7 @@ const ChatInput = ({ setOpenPicker, onSendMessage }) => {
 const Footer = ({ onSendMessage }) => {
   const theme = useTheme();
   const [openPicker, setOpenPicker] = useState(false);
+  const handleSendRef = useRef();
 
   return (
     <Box
@@ -174,6 +171,7 @@ const Footer = ({ onSendMessage }) => {
           <ChatInput
             setOpenPicker={setOpenPicker}
             onSendMessage={onSendMessage}
+            handleSendRef={handleSendRef}
           />
         </Stack>
         <Box
@@ -184,12 +182,8 @@ const Footer = ({ onSendMessage }) => {
             borderRadius: 1.5,
           }}
         >
-           <IconButton
-            onClick={() =>
-              document
-                .querySelector('input[placeholder="Write a message..."]')
-                .dispatchEvent(new KeyboardEvent("keypress", { key: "Enter" }))
-            } // Trigger send message
+          <IconButton
+            onClick={() => handleSendRef.current.send()} // Trigger send message
             sx={{
               height: "100%",
               width: "100%",
@@ -201,23 +195,6 @@ const Footer = ({ onSendMessage }) => {
           </IconButton>
         </Box>
       </Stack>
-      {/* {openPicker && (
-        <Box
-          sx={{
-            display: "inline",
-            zIndex: 10,
-            position: "fixed",
-            bottom: 81,
-            right: 100,
-          }}
-        >
-          <Picker
-            theme={theme.palette.mode}
-            data={data}
-            onEmojiSelect={(emoji) => console.log(emoji)}
-          />
-        </Box>
-      )} */}
     </Box>
   );
 };
