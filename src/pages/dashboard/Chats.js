@@ -1,19 +1,32 @@
-import React from 'react';
-import { Box, IconButton, Stack, Typography, InputBase, Button, Divider, Avatar, Badge } from '@mui/material';
-import { ArchiveBox, CircleDashed, MagnifyingGlass } from 'phosphor-react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Box, IconButton, Stack, Typography } from '@mui/material';
+import { CircleDashed, MagnifyingGlass } from 'phosphor-react';
 import { useTheme } from '@mui/material/styles';
-import { faker } from '@faker-js/faker';
-import { ChatList } from '../../data';
 import { Search, SearchIconWrapper, StyledInputBase } from '../../components/Search';
 import ChatElement from '../../components/ChatElement';
 
 const Chats = ({ setSelectedChat }) => {
   const theme = useTheme();
+  const [conversations, setConversations] = useState([]);
   const user = {
     role: 'patient'
-  }
+  };
 
+  useEffect(() => {
+    const fetchConversations = async () => {
 
+      try {
+        const response = await axios.get('http://13.60.35.232:8000/api/conversations/?format=api');
+
+        setConversations(response.data);
+      } catch (error) {
+        console.error('Failed to fetch conversations:', error);
+      }
+    };
+
+    fetchConversations();
+  }, []);
 
   return (
     <Box sx={{
@@ -42,40 +55,29 @@ const Chats = ({ setSelectedChat }) => {
 
         <Stack className='scrollbar' spacing={2} direction='column' sx={{ flexGrow: 1, overflow: 'scroll', height: '100%' }}>
           <Stack spacing={2.4}>
-            {user.role === 'therapist' ?
+            {user.role === 'therapist' &&
               <Stack spacing={2.4}>
-                {ChatList.filter((el) => el.conversationRequest).length > 0 ?
-                  < Typography variant='subtitle2' sx={{ color: "#676767" }}>
-                Requests
-              </Typography> : ""
+                {conversations.filter((el) => el.status==='request').length > 0 &&
+                  <Typography variant='subtitle2' sx={{ color: "#676767" }}>
+                    Requests
+                  </Typography>
+                }
+
+                {conversations.filter((el) => el.status==='request').map((el) => (
+                  <ChatElement key={el.id} {...el} onClick={() => setSelectedChat(el)} />
+                ))}
+              </Stack>
             }
-
-            {ChatList.filter((el) => el.conversationRequest).map((el) => (
-              <ChatElement key={el.id} {...el} onClick={() => {
-                // debugger
-                setSelectedChat(el)
-              }
-
-              } />
+            <Typography variant='subtitle2' sx={{ color: "#676767" }}>
+              {user.role === 'patient' ? "All Therapists" : "All Patients"}
+            </Typography>
+            {conversations.filter((el) => el.status==='active').map((el) => (
+              <ChatElement key={el.id} {...el} onClick={() => setSelectedChat(el)} />
             ))}
-
           </Stack>
-              : ""}
-          <Typography variant='subtitle2' sx={{ color: "#676767" }}>
-            {user.role === 'patient' ? "All Therapists" : "All Patients"}
-          </Typography>
-          {ChatList.filter((el) => !el.conversationRequest).map((el) => (
-            <ChatElement key={el.id} {...el} onClick={() => {
-              // debugger
-              setSelectedChat(el)
-            }
-
-            } />
-          ))}
         </Stack>
       </Stack>
-    </Stack>
-    </Box >
+    </Box>
   );
 };
 
