@@ -1,20 +1,8 @@
-# WeChat - React Js Chat App
-
-**live demo: [https://react-chat-app-kohl.vercel.app/app](https://react-chat-app-kohl.vercel.app/app)**
-
----
-
-### Made with ❤️ by [Dulanjali Senarathna](https://www.linkedin.com/in/dulanjali-senarathna/)
-
----
-
 ## Project Description
 
-Mainly focused on react js front-end development. I used css for styling. Also, this application used React Context API and redux for state management.
+Mainly focused on react js front-end development. I used css and Material UI for styling. Also, this application used React Context API.
 
-This chat app has basic chat app functionalities such as login, register, reset password, chat, conversation, group call, contact, starred messages, medial, files and links, settings, profile, edit profile, emoji pickers and etc. We can implement all the features using backend in future. 
-
-You can change theming colors and dark and light modes by clicking settings icon in bottom-left cornaer.
+This chat app has basic chat app functionalities such as login, chat, conversation and media. We can implement all the features using backend in future. 
 
 ## What I used
 
@@ -31,8 +19,13 @@ You can change theming colors and dark and light modes by clicking settings icon
 
 ## Requirements
 
-- Basic ReactJs knowledge
-- Basic HTML, CSS knowledge
+- The specialist can open a new conversation with the parent at any time
+- The parent can only send a request for therapist to initiate a new conversation and
+cannot open a new conversations
+- The conversation can hold different statuses and can be visited back at any point in
+time even if it was "closed"
+- Ability for both parties to upload a video/image & be able to load it inside of the chat
+- The chat history can retrieved by either the therapist or the parent at any point of time
 
 ## Getting Started
 
@@ -67,34 +60,4 @@ The project is for the people who wanna get more skilled in `ReactJs`.
 
 ---
 
-## Feedback
 
-If you have any feedback, please reach out to us at [Dulanjali Senarathna](https://www.behance.net/dulanjasenarathna)
-
-Happy Coding! 🚀
-
-# Website's screenshots
-
-![React js chat app 1](https://user-images.githubusercontent.com/59603716/236672849-f2577271-4a2b-4b25-bca2-97755ba0c9c2.jpg)
-
-![React js chat app 2](https://user-images.githubusercontent.com/59603716/236672853-2e1e2d1a-3e5a-44cd-a472-e0a4285de179.jpg)
-
-![React js chat app 3](https://user-images.githubusercontent.com/59603716/236672858-8b4a24ec-f287-4161-ae1f-7ed6115e35de.jpg)
-
-![React js chat app 4](https://user-images.githubusercontent.com/59603716/236672872-b12dbfbb-b73f-47e0-ab53-d53960083888.jpg)
-
-![React js chat app 5](https://user-images.githubusercontent.com/59603716/236672879-b3f9682c-5ced-4f8e-b3e7-dbbedf901d54.jpg)
-
-![React js chat app 6](https://user-images.githubusercontent.com/59603716/236672884-cddfe6bb-5550-484a-a215-08ec09e52365.jpg)
-
-![React js chat app 7](https://user-images.githubusercontent.com/59603716/236672886-080587d0-92f5-476f-ae24-263bfe8ab23d.jpg)
-
-![React js chat app 8](https://user-images.githubusercontent.com/59603716/236672893-bdd01215-3d0c-4a87-98e8-b8410735390c.jpg)
-
-![React js chat app 9](https://user-images.githubusercontent.com/59603716/236672900-8046f9d1-9d32-4f8b-b443-fa265fa059bd.jpg)
-
-![React js chat app 10](https://user-images.githubusercontent.com/59603716/236672903-d3139cb3-6490-427a-8573-cc9d4956ce60.jpg)
-
-## Dark mode
-
-![dark mode react js chat app](https://user-images.githubusercontent.com/59603716/236672907-66c3c842-66e8-40bb-9c44-ea1e6f7a29da.JPG)
