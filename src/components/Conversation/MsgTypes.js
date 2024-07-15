@@ -13,51 +13,52 @@ import {
     Button,
   } from "@mui/material";
   import { useTheme } from "@mui/material/styles";
-  import { DotsThreeVertical, DownloadSimple, Image } from "phosphor-react";
-  import React, { useState } from "react";
+  import { DotsThreeVertical, DownloadSimple, Image, User } from "phosphor-react";
+  import React, { useEffect, useState } from "react";
   import { Message_options } from "../../data";
   
   const DocMsg = ({ el, menu }) => {
     const theme = useTheme();
     return (
-      <Stack direction="row" justifyContent={el.incoming ? "start" : "end"}>
-        <Box
-          p={1.5}
-          sx={{
-            backgroundColor: el.incoming
-              ? theme.palette.background.default
-              : theme.palette.primary.main,
-            borderRadius: 1.5,
-            width: "max-content",
-          }}
-        >
-          <Stack spacing={2}>
-            <Stack
-              p={2}
-              spacing={3}
-              direction="row"
-              alignItems="center"
-              sx={{
-                backgroundColor: theme.palette.background.paper,
-                borderRadius: 1,
-              }}
-            >
-              <Image size={48} />
-              <Typography variant="caption">Abstract.png</Typography>
-              <IconButton>
-                <DownloadSimple />
-              </IconButton>
-            </Stack>
-            <Typography
-              variant="body2"
-              sx={{ color: el.incoming ? theme.palette.text : "#fff" }}
-            >
-              {el.message}
-            </Typography>
-          </Stack>
-        </Box>
-        {menu && <MessageOptions />}
-      </Stack>
+      <></>
+      // <Stack direction="row" justifyContent={el.incoming ? "start" : "end"}>
+      //   <Box
+      //     p={1.5}
+      //     sx={{
+      //       backgroundColor: el.incoming
+      //         ? theme.palette.background.default
+      //         : theme.palette.primary.main,
+      //       borderRadius: 1.5,
+      //       width: "max-content",
+      //     }}
+      //   >
+      //     <Stack spacing={2}>
+      //       <Stack
+      //         p={2}
+      //         spacing={3}
+      //         direction="row"
+      //         alignItems="center"
+      //         sx={{
+      //           backgroundColor: theme.palette.background.paper,
+      //           borderRadius: 1,
+      //         }}
+      //       >
+      //         <Image size={48} />
+      //         <Typography variant="caption">Abstract.png</Typography>
+      //         <IconButton>
+      //           <DownloadSimple />
+      //         </IconButton>
+      //       </Stack>
+      //       <Typography
+      //         variant="body2"
+      //         sx={{ color: el.incoming ? theme.palette.text : "#fff" }}
+      //       >
+      //         {el.message}
+      //       </Typography>
+      //     </Stack>
+      //   </Box>
+      //   {/* {menu && <MessageOptions />} */}
+      // </Stack>
     );
   };
   
@@ -77,106 +78,108 @@ import {
     };
   
     return (
-      <Stack direction="row" justifyContent={el.incoming ? "start" : "end"}>
-        <Box
-          p={1.5}
-          sx={{
-            backgroundColor: el.incoming
-              ? theme.palette.background.default
-              : theme.palette.primary.main,
-            borderRadius: 1.5,
-            width: "max-content",
-          }}
-        >
-          <Stack spacing={2}>
-            <Stack
-              p={2}
-              spacing={3}
-              alignItems="start"
-              sx={{
-                backgroundColor: theme.palette.background.paper,
-                borderRadius: 1,
-              }}
-            >
-              <img
-                src={el.preview}
-                alt={el.message}
-                style={{
-                  maxHeight: 210,
-                  borderRadius: "10px",
-                  cursor: "pointer",
-                }}
-                onClick={() => handleClickOpen(el.preview)}
-              />
-              <Stack spacing={2}>
-                <Typography variant="subtitle2">Creating Chat App</Typography>
-                <Typography
-                  variant="subtitle2"
-                  sx={{ color: theme.palette.primary.main }}
-                  component={Link}
-                  to="//https://www.youtube.com"
-                >
-                  www.youtube.com
-                </Typography>
-              </Stack>
-              <Typography
-                variant="body2"
-                color={el.incoming ? theme.palette.text : "#fff"}
-              >
-                {el.message}
-              </Typography>
-            </Stack>
-          </Stack>
-        </Box>
-        {menu && <MessageOptions />}
-        <ImageDialog open={open} onClose={handleClose} imgSrc={imgSrc} />
-      </Stack>
+      <></>
+      // <Stack direction="row" justifyContent={el.incoming ? "start" : "end"}>
+      //   <Box
+      //     p={1.5}
+      //     sx={{
+      //       backgroundColor: el.incoming
+      //         ? theme.palette.background.default
+      //         : theme.palette.primary.main,
+      //       borderRadius: 1.5,
+      //       width: "max-content",
+      //     }}
+      //   >
+      //     <Stack spacing={2}>
+      //       <Stack
+      //         p={2}
+      //         spacing={3}
+      //         alignItems="start"
+      //         sx={{
+      //           backgroundColor: theme.palette.background.paper,
+      //           borderRadius: 1,
+      //         }}
+      //       >
+      //         <img
+      //           src={el.preview}
+      //           alt={el.message}
+      //           style={{
+      //             maxHeight: 210,
+      //             borderRadius: "10px",
+      //             cursor: "pointer",
+      //           }}
+      //           onClick={() => handleClickOpen(el.preview)}
+      //         />
+      //         <Stack spacing={2}>
+      //           <Typography variant="subtitle2">Creating Chat App</Typography>
+      //           <Typography
+      //             variant="subtitle2"
+      //             sx={{ color: theme.palette.primary.main }}
+      //             component={Link}
+      //             to="//https://www.youtube.com"
+      //           >
+      //             www.youtube.com
+      //           </Typography>
+      //         </Stack>
+      //         <Typography
+      //           variant="body2"
+      //           color={el.incoming ? theme.palette.text : "#fff"}
+      //         >
+      //           {el.message}
+      //         </Typography>
+      //       </Stack>
+      //     </Stack>
+      //   </Box>
+      //   {menu && <MessageOptions />}
+      //   <ImageDialog open={open} onClose={handleClose} imgSrc={imgSrc} />
+      // </Stack>
     );
   };
   
   const ReplyMsg = ({ el, menu }) => {
     const theme = useTheme();
     return (
-      <Stack direction="row" justifyContent={el.incoming ? "start" : "end"}>
-        <Box
-          p={1.5}
-          sx={{
-            backgroundColor: el.incoming
-              ? theme.palette.background.default
-              : theme.palette.primary.main,
-            borderRadius: 1.5,
-            width: "max-content",
-          }}
-        >
-          <Stack spacing={2}>
-            <Stack
-              p={2}
-              direction="column"
-              spacing={3}
-              alignItems="center"
-              sx={{
-                backgroundColor: theme.palette.background.paper,
-                borderRadius: 1,
-              }}
-            >
-              <Typography variant="body2" color={theme.palette.text}>
-                {el.message}
-              </Typography>
-            </Stack>
-            <Typography
-              variant="body2"
-              color={el.incoming ? theme.palette.text : "#fff"}
-            >
-              {el.reply}
-            </Typography>
-          </Stack>
-        </Box>
-        {menu && <MessageOptions />}
-      </Stack>
+      <></>
+      // <Stack direction="row" justifyContent={el.incoming ? "start" : "end"}>
+      //   <Box
+      //     p={1.5}
+      //     sx={{
+      //       backgroundColor: el.incoming
+      //         ? theme.palette.background.default
+      //         : theme.palette.primary.main,
+      //       borderRadius: 1.5,
+      //       width: "max-content",
+      //     }}
+      //   >
+      //     <Stack spacing={2}>
+      //       <Stack
+      //         p={2}
+      //         direction="column"
+      //         spacing={3}
+      //         alignItems="center"
+      //         sx={{
+      //           backgroundColor: theme.palette.background.paper,
+      //           borderRadius: 1,
+      //         }}
+      //       >
+      //         <Typography variant="body2" color={theme.palette.text}>
+      //           {el.message}
+      //         </Typography>
+      //       </Stack>
+      //       <Typography
+      //         variant="body2"
+      //         color={el.incoming ? theme.palette.text : "#fff"}
+      //       >
+      //         {el.reply}
+      //       </Typography>
+      //     </Stack>
+      //   </Box>
+      //   {menu && <MessageOptions />}
+      // </Stack>
     );
   };
   
-  const MediaMsg = ({ el, menu }) => {
+  const MediaMsg = ({ el, menu,userRole,userId }) => {
     const theme = useTheme();
     const [open, setOpen] = useState(false);
     const [imgSrc, setImgSrc] = useState(null);
@@ -192,11 +195,11 @@ import {
     };
   
     return (
-      <Stack direction="row" justifyContent={el.incoming ? "start" : "end"}>
+      <Stack direction="row" justifyContent={el.sender!==userId ? "start" : "end"}>
         <Box
           p={1.5}
           sx={{
-            backgroundColor: el.incoming
+            backgroundColor: el.sender!==userId
               ? theme.palette.background.default
               : theme.palette.primary.main,
             borderRadius: 1.5,
@@ -204,47 +207,49 @@ import {
           }}
         >
           <Stack spacing={1}>
-            {el.img && (
+            {el.file.endsWith('.svg') || el.file.endsWith('.png') && (
               <img
-                src={el.img}
-                alt={el.message}
+                src={el.file}
+                alt={el.content}
                 style={{
                   maxHeight: 210,
                   borderRadius: "10px",
                   cursor: "pointer",
                 }}
-                onClick={() => handleClickOpen(el.img)}
+                onClick={() => handleClickOpen(el.file)}
               />
             )}
-            {el.video && (
+            {el.file.endsWith('.mp4') && (
               <video
                 controls
-                src={el.video}
+                src={el.file}
                 style={{ width: "100%", maxHeight: 210, borderRadius: "10px" }}
               />
             )}
             <Typography
               variant="body2"
-              color={el.incoming ? theme.palette.text : "#fff"}
+              color={el.sender!==userId ? theme.palette.text : "#fff"}
             >
-              {el.message}
+              {el.content}
             </Typography>
           </Stack>
         </Box>
-        {menu && <MessageOptions />}
+        {/* {menu && <MessageOptions />} */}
         <ImageDialog open={open} onClose={handleClose} imgSrc={imgSrc} />
       </Stack>
     );
   };
   
-  const TextMsg = ({ el, menu }) => {
+  const TextMsg = ({ el, menu,userId,userRole }) => {
     const theme = useTheme();
+
+
     return (
-      <Stack direction="row" justifyContent={el.incoming ? "start" : "end"}>
+      <Stack direction="row" justifyContent={el.sender!==userId? "start" : "end"}>
         <Box
           p={1.5}
           sx={{
-            backgroundColor: el.incoming
+            backgroundColor: el.sender!==userId
               ? theme.palette.background.default
               : theme.palette.primary.main,
             borderRadius: 1.5,
@@ -253,12 +258,12 @@ import {
         >
           <Typography
             variant="body2"
-            color={el.incoming ? theme.palette.text : "#fff"}
+            color={el.sender!==userId ? theme.palette.text : "#fff"}
           >
-            {el.message}
+            {el.content}
           </Typography>
         </Box>
-        {menu && <MessageOptions />}
+        {/* {menu && <MessageOptions />} */}
       </Stack>
     );
   };
@@ -269,7 +274,7 @@ import {
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Divider width="46%" />
         <Typography variant="caption" sx={{ color: theme.palette.text }}>
-          {el.text}
+          {el.content}
         </Typography>
         <Divider width="46%" />
       </Stack>

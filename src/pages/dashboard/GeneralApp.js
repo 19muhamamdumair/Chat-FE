@@ -7,7 +7,8 @@ import Conversation from "../../components/Conversation";
 import Contact from "../../components/Contact";
 import SharedMessages from "../../components/SharedMessages";
 import StarredMessages from "../../components/StarredMessages";
-import ChatRequests from "../../components/Conversation/ChatRequests";
+import { getUserInfo } from "../../services/userservice";
+import axios from "axios";
 // import ChatRequests from "../../components/ChatRequests";
 
 const GeneralApp = () => {
@@ -15,53 +16,43 @@ const GeneralApp = () => {
   const { sidebar } = useSelector((store) => store.app); // access our store inside component
   const [selectedChat, setSelectedChat] = useState(null);
   const [isAwaitingApproval, setIsAwaitingApproval] = useState(false);
-  const [chatRequests, setChatRequests] = useState([]);
+  const [userRole,setUserRole]=useState(null);
+  const [userId,setUserId]=useState(null);
+  const [user,setUser]=useState(null)
 
-  // useEffect(() => {
-  //   if (user.role === 'therapist') {
-  //     fetchChatRequests();
-  //   }
-  // }, [user.role]);
 
-  const fetchChatRequests = async () => {
-    const response = await fetch('/api/chat-requests/');
-    if (response.ok) {
-      const data = await response.json();
-      setChatRequests(data);
-    }
-  };
 
-  const handleRequestConversation = async () => {
-    // Implement the logic to send a request for a conversation
-    console.log("Request conversation with therapist");
-    // Send API request to create a new chat request
-    const response = await fetch('/api/chat-requests/', {
-      method: 'POST',
-      body: JSON.stringify({ therapist: selectedChat.therapist.id, parent: selectedChat.parent.id }),
-      headers: { 'Content-Type': 'application/json' },
+  useEffect(()=>{
+    const storedUser = getUserInfo();
+    setUserRole(storedUser.role);
+    setUserId(storedUser.id)
+    setUser(storedUser)
+  },[])
+ 
+
+  const handleRequestConversation =() =>{
+    
+  }
+
+
+  const handleChatSelection = async (chat) => {
+    const response = await axios.get(`http://13.60.35.232:8000/api/messages?conversation_id=${chat.id}`, {
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMDgwNzcxLCJpYXQiOjE3MjA5OTQzNzEsImp0aSI6IjExNDE0OTdhM2U0NDQ3MDRiYTNhNTk0MzlkNTc1OGZjIiwidXNlcl9pZCI6MTF9.j0neBlN2aBFYi9SapE6SQgL7AbG8e4E78SAndOEAC7E`,
+      },
     });
-    if (response.ok) {
-      setIsAwaitingApproval(true);
-    }
-  };
 
-  const handleChatSelection = (chat) => {
-    setSelectedChat(chat);
+    const updatedChat = {
+      ...chat,
+      messages: response.data,
+    };
+
+    setSelectedChat(updatedChat);
     // Check if there's a pending request
     if (chat.status === 'pending') {
       setIsAwaitingApproval(true);
     } else {
       setIsAwaitingApproval(false);
-    }
-  };
-
-  const handleApproveRequest = async (requestId) => {
-    const response = await fetch(`/api/chat-requests/${requestId}/approve/`, {
-      method: 'POST',
-    });
-    if (response.ok) {
-      fetchChatRequests();
-      // Optionally, update the conversation state or notify the user
     }
   };
 
@@ -80,9 +71,12 @@ const GeneralApp = () => {
       >
         {/* Conversation */}
         <Conversation
+        user={user}
+        userRole={userRole}
+        userId={userId}
           selectedChat={selectedChat}
           onRequestConversation={handleRequestConversation}
-          isAwaitingApproval={isAwaitingApproval}
+          // isAwaitingApproval={isAwaitingApproval}
         />
       </Box>
       {/* Contact */}
@@ -99,10 +93,6 @@ const GeneralApp = () => {
               break;
           }
         })()}
-      {/* Chat Requests for Therapists */}
-      {/* {user.role === 'therapist' && (
-        <ChatRequests requests={chatRequests} onApprove={handleApproveRequest} />
-      )} */}
     </Stack>
   );
 };

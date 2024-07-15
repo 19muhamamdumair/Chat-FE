@@ -30,16 +30,16 @@ const Header = ({ selectedChat, user }) => {
                                 horizontal: "right",
                             }}
                             variant="dot">
-                            <Avatar alt={""} src={selectedChat?.img} />
+                            {/* <Avatar alt={""} src={selectedChat?.img} /> */}
                         </StyledBadge>
 
                     </Box>
                     <Stack spacing={0.2}>
                         <Typography variant='subtitle2'>
-                            {selectedChat?.name}
+                            {/* {selectedChat?.name} */}
                         </Typography>
                         <Typography variant='caption'>
-                            {selectedChat?.online === true ? 'Online' : 'Offline'}
+                            {/* {selectedChat?.online === true ? 'Online' : 'Offline'} */}
                         </Typography>
                     </Stack>
                 </Stack>

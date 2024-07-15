@@ -4,10 +4,8 @@ import { useTheme } from "@mui/material/styles";
 import StyledBadge from "./StyledBadge";
 
 
-const ChatElement = ({ id, status, therapist, parent, onClick }) => {
-  const user={
-    role:'therapist'
-  }
+const ChatElement = ({ userRole, id, status, therapist, parent, onClick }) => {
+
 // const ChatElement = ({ id, name, img, msg, time, online, unread, onClick }) => {
   const theme = useTheme();
   return (
@@ -29,7 +27,7 @@ const ChatElement = ({ id, status, therapist, parent, onClick }) => {
           <Stack spacing={0.3}>
             <Typography variant='subtitle2'>
               {/* {name} */}
-              {user.role==='therapist'?therapist:parent}
+              {userRole==='therapist'?parent:therapist}
             </Typography>
             <Typography variant='caption'>
               {/* {msg} */}
