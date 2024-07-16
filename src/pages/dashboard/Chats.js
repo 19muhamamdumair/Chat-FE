@@ -25,7 +25,6 @@ const Chats = ({ setSelectedChat }) => {
   useEffect(() => {
     const fetchConversations = async () => {
       try {
-        debugger
         const response = await axios.get('http://13.60.35.232:8000/api/conversations/', {
           headers: {
             Authorization: `Bearer ${token}`,

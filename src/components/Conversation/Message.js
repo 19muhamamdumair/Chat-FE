@@ -1,4 +1,4 @@
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Stack, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import {
   DocMsg,
@@ -9,7 +9,12 @@ import {
   TimeLine,
 } from "./MsgTypes";
 
-const Message = ({ chatHistory, menu, onRequestConversation,userId,userRole }) => {
+const Message = ({isLoading, chatHistory, menu, onRequestConversation,userId,userRole }) => {
+
+  useEffect(()=>{
+    console.log(isLoading);
+    debugger
+  },[isLoading])
 
   if (!chatHistory || !chatHistory.messages || chatHistory.messages.length === 0) {
     return (
@@ -27,6 +32,7 @@ const Message = ({ chatHistory, menu, onRequestConversation,userId,userRole }) =
   return (
     <Box p={3}>
       <Stack spacing={3}>
+      
         {chatHistory.messages.map((el, index) => {
           if(el.file)
           {
@@ -36,26 +42,6 @@ const Message = ({ chatHistory, menu, onRequestConversation,userId,userRole }) =
           {
             return <TextMsg userRole={userRole} userId={userId} key={index} el={el} menu={menu} />;
           }
-          // switch (el.type) {
-          //   case "divider":
-          //     return <TimeLine key={index} el={el} />;
-          //   case "msg":
-          //     switch (el.subtype) {
-          //       case "img":
-          //       case "video": // Add video subtype here
-          //         return <MediaMsg key={index} el={el} menu={menu} />;
-          //       case "doc":
-          //         return <DocMsg key={index} el={el} menu={menu} />;
-          //       case "link":
-          //         return <LinkMsg key={index} el={el} menu={menu} />;
-          //       case "reply":
-          //         return <ReplyMsg key={index} el={el} menu={menu} />;
-          //       default:
-          //         return <TextMsg userRole={userRole} userId={userId} key={index} el={el} menu={menu} />;
-          //     }
-          //   default:
-          //     return <></>;
-          // }
         })}
       </Stack>
     </Box>

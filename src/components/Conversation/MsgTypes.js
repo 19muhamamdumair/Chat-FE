@@ -193,6 +193,10 @@ import {
       setOpen(false);
       setImgSrc(null);
     };
+
+    useEffect(()=>{
+      console.log(el);
+    },[el])
   
     return (
       <Stack direction="row" justifyContent={el.sender!==userId ? "start" : "end"}>
@@ -207,7 +211,9 @@ import {
           }}
         >
           <Stack spacing={1}>
-            {el.file.endsWith('.svg') || el.file.endsWith('.png') && (
+            {
+            
+            el?.file?.endsWith('.svg') || el?.file?.endsWith('.png') && (
               <img
                 src={el.file}
                 alt={el.content}
@@ -219,7 +225,9 @@ import {
                 onClick={() => handleClickOpen(el.file)}
               />
             )}
-            {el.file.endsWith('.mp4') && (
+            {
+            
+            el?.file?.endsWith('.mp4') && (
               <video
                 controls
                 src={el.file}
