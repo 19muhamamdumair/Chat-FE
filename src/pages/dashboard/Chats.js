@@ -6,6 +6,10 @@ import { useTheme } from '@mui/material/styles';
 import { Search, SearchIconWrapper, StyledInputBase } from '../../components/Search';
 import ChatElement from '../../components/ChatElement';
 import { getUserInfo } from '../../services/userservice';
+// const dotenv = require("dotenv");
+
+// dotenv.config({ path: ".env" });
+const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyNjIwNjE5LCJpYXQiOjE3MjEwODQ0OTIsImp0aSI6ImQwYWE5M2RiYmZkNTRhMDZhZDA1ZDEwN2M1MmUxMmFhIiwidXNlcl9pZCI6MTF9.pXcwSHtqWD96KApLG49xoT-M0Ip49fl1FHD5k9vGnvY"
 
 const Chats = ({ setSelectedChat }) => {
   const theme = useTheme();
@@ -21,24 +25,26 @@ const Chats = ({ setSelectedChat }) => {
   useEffect(() => {
     const fetchConversations = async () => {
       try {
+        debugger
         const response = await axios.get('http://13.60.35.232:8000/api/conversations/', {
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMDgwNzcxLCJpYXQiOjE3MjA5OTQzNzEsImp0aSI6IjExNDE0OTdhM2U0NDQ3MDRiYTNhNTk0MzlkNTc1OGZjIiwidXNlcl9pZCI6MTF9.j0neBlN2aBFYi9SapE6SQgL7AbG8e4E78SAndOEAC7E`,
+            Authorization: `Bearer ${token}`,
           },
         });
 
         const storedUser = getUserInfo();
+        
         setUserRole(storedUser.role);
         setUserId(storedUser.id)
 
-        debugger
+        
 
 
         // Filter conversations based on user role and ID
         const filteredConversations = response.data.filter(el => {
           if (storedUser.role === 'therapist') {
             return el.therapist === parseInt(storedUser.id);
-          } else if (storedUser.role  === 'patient') {
+          } else if (storedUser.role  === 'parent') {
             return el.parent === parseInt(storedUser.id);
           }
           return false;
@@ -95,7 +101,7 @@ const Chats = ({ setSelectedChat }) => {
             }
 
             <Typography variant='subtitle2' sx={{ color: "#676767" }}>
-              {userRole === 'patient' ? "All Therapists" : "All Patients"}
+              {userRole === 'parent' ? "All Therapists" : "All Patients"}
             </Typography>
 
             {conversations.filter(el => el.status === 1).map(el => (

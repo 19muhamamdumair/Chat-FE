@@ -9,6 +9,12 @@ import SharedMessages from "../../components/SharedMessages";
 import StarredMessages from "../../components/StarredMessages";
 import { getUserInfo } from "../../services/userservice";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+// const dotenv = require("dotenv");
+
+// dotenv.config({ path: ".env" });
+const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyNjIwNjE5LCJpYXQiOjE3MjEwODQ0OTIsImp0aSI6ImQwYWE5M2RiYmZkNTRhMDZhZDA1ZDEwN2M1MmUxMmFhIiwidXNlcl9pZCI6MTF9.pXcwSHtqWD96KApLG49xoT-M0Ip49fl1FHD5k9vGnvY"
+
 // import ChatRequests from "../../components/ChatRequests";
 
 const GeneralApp = () => {
@@ -19,6 +25,8 @@ const GeneralApp = () => {
   const [userRole,setUserRole]=useState(null);
   const [userId,setUserId]=useState(null);
   const [user,setUser]=useState(null)
+  const navigate = useNavigate();
+
 
 
 
@@ -38,7 +46,7 @@ const GeneralApp = () => {
   const handleChatSelection = async (chat) => {
     const response = await axios.get(`http://13.60.35.232:8000/api/messages?conversation_id=${chat.id}`, {
       headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMDgwNzcxLCJpYXQiOjE3MjA5OTQzNzEsImp0aSI6IjExNDE0OTdhM2U0NDQ3MDRiYTNhNTk0MzlkNTc1OGZjIiwidXNlcl9pZCI6MTF9.j0neBlN2aBFYi9SapE6SQgL7AbG8e4E78SAndOEAC7E`,
+        Authorization: `Bearer ${token}`
       },
     });
 
@@ -57,6 +65,7 @@ const GeneralApp = () => {
   };
 
   return (
+    user?
     <Stack direction="row" sx={{ width: "100%" }}>
       {/* Chats */}
       <Chats setSelectedChat={handleChatSelection} />
@@ -94,6 +103,7 @@ const GeneralApp = () => {
           }
         })()}
     </Stack>
+    :""
   );
 };
 

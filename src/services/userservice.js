@@ -1,6 +1,6 @@
 // src/services/userService.js
 
-const USER_KEY = 'user';
+const USER_KEY = 'chatuser';
 
 export const getUserInfo = () => {
   const user = localStorage.getItem(USER_KEY);

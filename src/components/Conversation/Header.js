@@ -13,6 +13,16 @@ const Header = ({ selectedChat, user }) => {
 
     const [refresh, setRefresh] = useState(true);
 
+    useEffect(()=>{
+        console.log(selectedChat);
+        
+    },[selectedChat])
+
+    useEffect(()=>{
+        console.log(user);
+        
+    },[user])
+
     // useEffect(() => {
     //     setRefresh(!refresh)
     // }, [selectedChat])
@@ -37,24 +47,27 @@ const Header = ({ selectedChat, user }) => {
                     <Stack spacing={0.2}>
                         <Typography variant='subtitle2'>
                             {/* {selectedChat?.name} */}
+                            {/* {selectedChat.email} */}
+                            {user?.role==='therapist'?selectedChat?.parent:selectedChat?.therapist}
                         </Typography>
                         <Typography variant='caption'>
                             {/* {selectedChat?.online === true ? 'Online' : 'Offline'} */}
                         </Typography>
                     </Stack>
                 </Stack>
-                {selectedChat.conversationRequest === false && user.role === 'therapist' ?
+                {selectedChat?.status === 1 && user?.role === 'therapist' ?
                     <Stack direction='row' alignItems='center' spacing={3}>
                         <Button variant='contained' color='primary' onClick={() => {
 
+                            
                         }}>Close Conversation</Button>
 
                     </Stack>
 
-                    : user.role === 'patient' && selectedChat.conversationClosed === true ?
+                    : user.role === 'parent' && selectedChat?.status === 4 ?
                         <Stack direction='row' alignItems='center' spacing={3}>
                             <Button variant='contained' color='primary' onClick={() => {
-
+                                
                             }}>Request Again For Conversation</Button>
 
                         </Stack> :

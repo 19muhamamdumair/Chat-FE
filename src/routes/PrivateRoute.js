@@ -12,7 +12,7 @@ const PrivateRoute = ({ element }) => {
     console.log('isAuthenticated:', isAuthenticated);
   }, [isAuthenticated]);
 
-  return isAuthenticated ? element :element;
+  return element;
 };
 
 export default PrivateRoute;
