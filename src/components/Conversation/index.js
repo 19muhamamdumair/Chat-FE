@@ -13,8 +13,8 @@ import Message from "./Message";
 import { conversations, Chat_History as initialChatHistory } from "../../data"; // Make sure the path is correct
 import axios from "axios";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMzM5MTI1LCJpYXQiOjE3MjEyNTI3MjUsImp0aSI6ImI2ZmQzMWFkNDA5ZDQ2M2U4NzQ2MzgwOTQ1NGYwMDNiIiwidXNlcl9pZCI6NX0.pfeeFPuwJk9t9BsajwMZgOHOOx7T1lS30egA6J1nkOs";
+import { messageRequest } from "../../services/miscservices";
+import { SOCKET_BASE_URL } from "../../config";
 
 const Conversation = ({
   userRole,
@@ -36,7 +36,7 @@ const Conversation = ({
     console.log("selectedChat:", selectedChat);
     setChatHistory(selectedChat);
     ws.current = new W3CWebSocket(
-      `ws://13.60.35.232:5000/ws/chat/${selectedChat?.id.toString()}/`
+      `${SOCKET_BASE_URL}/ws/chat/${selectedChat?.id.toString()}/`
     ); // Replace with your WebSocket server URL
 
     // WebSocket event listeners
@@ -56,18 +56,8 @@ const Conversation = ({
         message.file = f;
       }
       if (message.message_ID) {
-        // http://127.0.0.1:8000/api/message/?message_id=1
         try {
-          const response = await axios.get(
-            `http://127.0.0.1:8000/api/message/?message_id=${message.message_ID}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-
+          const response = await messageRequest(message);
           if (response.status === 200) {
             console.log("Message send successfully");
             const savedMessage = response.data;

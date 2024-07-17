@@ -10,12 +10,11 @@ import {
 } from "../../components/Search";
 import ChatElement from "../../components/ChatElement";
 import { getUserInfo } from "../../services/userservice";
-import { getAllTherapist } from "../../services/miscservices";
+import { getAllTherapist, getConversations } from "../../services/miscservices";
 import modifiedListTherapist from "../../helper/usersListAlter";
 // const dotenv = require("dotenv");
 
 // dotenv.config({ path: ".env" });
-const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMzM5MTI1LCJpYXQiOjE3MjEyNTI3MjUsImp0aSI6ImI2ZmQzMWFkNDA5ZDQ2M2U4NzQ2MzgwOTQ1NGYwMDNiIiwidXNlcl9pZCI6NX0.pfeeFPuwJk9t9BsajwMZgOHOOx7T1lS30egA6J1nkOs"
 
 const Chats = ({ setSelectedChat }) => {
   const theme = useTheme();
@@ -30,14 +29,7 @@ const Chats = ({ setSelectedChat }) => {
   useEffect(() => {
     const fetchConversations = async () => {
       try {
-        const response = await axios.get(
-          "http://13.60.35.232:8000/api/conversations/",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await getConversations();
 
         const storedUser = getUserInfo();
 

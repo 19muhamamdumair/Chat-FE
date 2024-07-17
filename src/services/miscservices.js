@@ -28,3 +28,28 @@ export const loginRequest = (credentials) => {
     return axios.post(`${BASE_URL}sign_in`, credentials);
   } catch (error) {}
 };
+
+export const messageRequest = (message) => {
+  try {
+    const token = getUserToken();
+
+    return axios.get(`${BASE_URL}message/?message_id=${message.message_ID}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  } catch (error) {}
+};
+
+export const getConversations = () => {
+  try {
+    const token = getUserToken();
+
+    return axios.get(`${BASE_URL}conversations/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (error) {}
+};
