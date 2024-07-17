@@ -14,7 +14,7 @@ import { conversations, Chat_History as initialChatHistory } from "../../data"; 
 import axios from "axios";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyNjIwNjE5LCJpYXQiOjE3MjEwODQ0OTIsImp0aSI6ImQwYWE5M2RiYmZkNTRhMDZhZDA1ZDEwN2M1MmUxMmFhIiwidXNlcl9pZCI6MTF9.pXcwSHtqWD96KApLG49xoT-M0Ip49fl1FHD5k9vGnvY";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMzM5MTI1LCJpYXQiOjE3MjEyNTI3MjUsImp0aSI6ImI2ZmQzMWFkNDA5ZDQ2M2U4NzQ2MzgwOTQ1NGYwMDNiIiwidXNlcl9pZCI6NX0.pfeeFPuwJk9t9BsajwMZgOHOOx7T1lS30egA6J1nkOs";
 
 const Conversation = ({
   userRole,
@@ -27,6 +27,7 @@ const Conversation = ({
 
   const [chatHistory, setChatHistory] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  // const [apiResponse,setApiResponse]=useState(null);
 
   let ws = useRef(null);
 
@@ -43,14 +44,47 @@ const Conversation = ({
       console.log("WebSocket connected");
     };
 
-    ws.current.onmessage = (event) => {
+    ws.current.onmessage = async (event) => {
+      debugger;
       // Handle incoming messages from WebSocket
       const message = JSON.parse(event.data);
       console.log("Received message:", message);
+      debugger;
       let f = null;
       if (message.file) {
         f = base64ToFile(message.file, message.fileName);
         message.file = f;
+      }
+      if (message.message_ID) {
+        // http://127.0.0.1:8000/api/message/?message_id=1
+        try {
+          const response = await axios.get(
+            `http://127.0.0.1:8000/api/message/?message_id=${message.message_ID}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+
+          if (response.status === 200) {
+            console.log("Message send successfully");
+            const savedMessage = response.data;
+            // setApiResponse(savedMessage)
+
+            setChatHistory((prevHistory) => ({
+              ...prevHistory,
+              messages: [...prevHistory.messages, savedMessage],
+            }));
+          } else {
+            console.error("Failed to send message:", response);
+          }
+        } catch (error) {
+          console.error("Error sending message:", error);
+        } finally {
+          setIsLoading(false);
+        }
       }
 
       // Update chat history with incoming message
@@ -58,6 +92,7 @@ const Conversation = ({
       //   ...prevHistory,
       //   messages: [...prevHistory.messages, message],
       // }));
+      setIsLoading(false);
     };
 
     ws.current.onclose = () => {
@@ -87,6 +122,7 @@ const Conversation = ({
       sender: userId,
       file: base64File,
       fileName: messageData?.media ? messageData.media.file.name : null,
+      message_ID: null,
     };
 
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
@@ -101,39 +137,36 @@ const Conversation = ({
     //   messages: [...prevHistory.messages, newMessage],
     // }));
     // let f = null;
-    if (newMessage.file) {
-      // f = base64ToFile(newMessage.file, messageData.media.file.name)
-      newMessage.file = messageData.media.file;
-    }
+    // if (newMessage.file) {
+    //   // f = base64ToFile(newMessage.file, messageData.media.file.name)
+    //   newMessage.file = messageData.media.file;
+    // }
 
-    try {
-      const response = await axios.post(
-        "http://13.60.35.232:8000/api/messages/",
-        newMessage,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+    // try {
+    //   const response = await axios.post('http://13.60.35.232:8000/api/messages/', newMessage, {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //       'Content-Type': 'multipart/form-data',
+    //     },
+    //   });
 
-      if (response.status === 201) {
-        console.log("Message send successfully");
-        const savedMessage = response.data;
+    //   if (response.status === 201) {
+    //     console.log("Message send successfully")
+    //     const savedMessage = response.data;
+    //     // setApiResponse(savedMessage)
 
-        setChatHistory((prevHistory) => ({
-          ...prevHistory,
-          messages: [...prevHistory.messages, savedMessage],
-        }));
-      } else {
-        console.error("Failed to send message:", response);
-      }
-    } catch (error) {
-      console.error("Error sending message:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    //     setChatHistory((prevHistory) => ({
+    //       ...prevHistory,
+    //       messages: [...prevHistory.messages, savedMessage],
+    //     }));
+    //   } else {
+    //     console.error('Failed to send message:', response);
+    //   }
+    // } catch (error) {
+    //   console.error('Error sending message:', error);
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   const toBase64 = (file) =>
