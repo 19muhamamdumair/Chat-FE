@@ -45,19 +45,27 @@ const Conversation = ({
     };
 
     ws.current.onmessage = async (event) => {
-      debugger;
+
+      // debugger
       // Handle incoming messages from WebSocket
       const message = JSON.parse(event.data);
-      console.log("Received message:", message);
-      debugger;
       let f = null;
       if (message.file) {
         f = base64ToFile(message.file, message.fileName);
         message.file = f;
       }
-      if (message.message_ID) {
+      if (message.message_ID && message.file) {
+        // http://13.60.35.232:8000/api/message/?message_id=1
         try {
-          const response = await messageRequest(message);
+          setIsLoading(true)
+
+          const response = await axios.get(`http://13.60.35.232:8000/api/message/?message_id=${message.message_ID}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+
           if (response.status === 200) {
             console.log("Message send successfully");
             const savedMessage = response.data;
@@ -76,13 +84,19 @@ const Conversation = ({
           setIsLoading(false);
         }
       }
+      else {
+        setChatHistory((prevHistory) => ({
+          ...prevHistory,
+          messages: [...prevHistory.messages, message],
+        }));
+      }
 
       // Update chat history with incoming message
       // setChatHistory((prevHistory) => ({
       //   ...prevHistory,
       //   messages: [...prevHistory.messages, message],
       // }));
-      setIsLoading(false);
+      // setIsLoading(false)
     };
 
     ws.current.onclose = () => {
@@ -99,7 +113,7 @@ const Conversation = ({
   }, [selectedChat]);
 
   const handleSendMessage = async (messageData) => {
-    setIsLoading(true);
+    // setIsLoading(true);
     let base64File = null;
 
     if (messageData?.media?.file) {
@@ -114,6 +128,9 @@ const Conversation = ({
       fileName: messageData?.media ? messageData.media.file.name : null,
       message_ID: null,
     };
+
+
+
 
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       ws.current.send(JSON.stringify(newMessage));

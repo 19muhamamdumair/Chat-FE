@@ -15,18 +15,8 @@ import {
   TimeLine,
 } from "./MsgTypes";
 
-const Message = ({
-  isLoading,
-  chatHistory,
-  menu,
-  onRequestConversation,
-  userId,
-  userRole,
-}) => {
-  useEffect(() => {
-    console.log(isLoading);
-    // debugger
-  }, [isLoading]);
+const Message = ({isLoading, chatHistory, menu, onRequestConversation,userId,userRole }) => {
+
 
   if (
     !chatHistory ||
