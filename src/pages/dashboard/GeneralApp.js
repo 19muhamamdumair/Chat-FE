@@ -10,10 +10,12 @@ import StarredMessages from "../../components/StarredMessages";
 import { getUserInfo } from "../../services/userservice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getHandledChat } from "../../services/miscservices";
 // const dotenv = require("dotenv");
 
 // dotenv.config({ path: ".env" });
-const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyNjIwNjE5LCJpYXQiOjE3MjEwODQ0OTIsImp0aSI6ImQwYWE5M2RiYmZkNTRhMDZhZDA1ZDEwN2M1MmUxMmFhIiwidXNlcl9pZCI6MTF9.pXcwSHtqWD96KApLG49xoT-M0Ip49fl1FHD5k9vGnvY"
+const token =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzUyNjIwNjE5LCJpYXQiOjE3MjEwODQ0OTIsImp0aSI6ImQwYWE5M2RiYmZkNTRhMDZhZDA1ZDEwN2M1MmUxMmFhIiwidXNlcl9pZCI6MTF9.pXcwSHtqWD96KApLG49xoT-M0Ip49fl1FHD5k9vGnvY";
 
 // import ChatRequests from "../../components/ChatRequests";
 
@@ -22,33 +24,24 @@ const GeneralApp = () => {
   const { sidebar } = useSelector((store) => store.app); // access our store inside component
   const [selectedChat, setSelectedChat] = useState(null);
   const [isAwaitingApproval, setIsAwaitingApproval] = useState(false);
-  const [userRole,setUserRole]=useState(null);
-  const [userId,setUserId]=useState(null);
-  const [user,setUser]=useState(null)
+  const [userRole, setUserRole] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-
-
-
-  useEffect(()=>{
+  useEffect(() => {
     const storedUser = getUserInfo();
-    setUserRole(storedUser.role);
-    setUserId(storedUser.id)
-    setUser(storedUser)
-  },[])
- 
+    if (storedUser) {
+      setUserRole(storedUser.role);
+      setUserId(storedUser.id);
+      setUser(storedUser);
+    }
+  }, []);
 
-  const handleRequestConversation =() =>{
-    
-  }
-
+  const handleRequestConversation = () => {};
 
   const handleChatSelection = async (chat) => {
-    const response = await axios.get(`http://13.60.35.232:8000/api/messages?conversation_id=${chat.id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    });
+    const response = await getHandledChat(chat);
 
     const updatedChat = {
       ...chat,
@@ -57,16 +50,15 @@ const GeneralApp = () => {
 
     setSelectedChat(updatedChat);
     // Check if there's a pending request
-    if (chat.status === 'pending') {
+    if (chat.status === "pending") {
       setIsAwaitingApproval(true);
     } else {
       setIsAwaitingApproval(false);
     }
   };
 
-  return (
-    user?
-    <Stack direction="row" sx={{ width: "100%" }}>
+  return user ? (
+    <Stack direction='row' sx={{ width: "100%" }}>
       {/* Chats */}
       <Chats setSelectedChat={handleChatSelection} />
 
@@ -75,14 +67,16 @@ const GeneralApp = () => {
           height: "100%",
           width: "100vw",
           backgroundColor:
-            theme.palette.mode === "light" ? "#F0F4FA" : theme.palette.background.default,
+            theme.palette.mode === "light"
+              ? "#F0F4FA"
+              : theme.palette.background.default,
         }}
       >
         {/* Conversation */}
         <Conversation
-        user={user}
-        userRole={userRole}
-        userId={userId}
+          user={user}
+          userRole={userRole}
+          userId={userId}
           selectedChat={selectedChat}
           onRequestConversation={handleRequestConversation}
           // isAwaitingApproval={isAwaitingApproval}
@@ -103,7 +97,8 @@ const GeneralApp = () => {
           }
         })()}
     </Stack>
-    :""
+  ) : (
+    ""
   );
 };
 
