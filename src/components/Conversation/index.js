@@ -14,7 +14,8 @@ import { conversations, Chat_History as initialChatHistory } from "../../data"; 
 import axios from "axios";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { messageRequest } from "../../services/miscservices";
-import { SOCKET_BASE_URL } from "../../config";
+import { BASE_URL, SOCKET_BASE_URL } from "../../config";
+import { getUserToken } from "../../services/userservice";
 
 const Conversation = ({
   userRole,
@@ -22,14 +23,17 @@ const Conversation = ({
   user,
   selectedChat,
   onRequestConversation,
+  ws
 }) => {
   const theme = useTheme();
 
   const [chatHistory, setChatHistory] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
   // const [apiResponse,setApiResponse]=useState(null);
 
-  let ws = useRef(null);
+  // let ws = useRef(null);
+
 
   useEffect(() => {
     console.log("chatHistory:", chatHistory);
@@ -45,58 +49,30 @@ const Conversation = ({
     };
 
     ws.current.onmessage = async (event) => {
-
-      // debugger
-      // Handle incoming messages from WebSocket
       const message = JSON.parse(event.data);
       let f = null;
-      if (message.file) {
-        f = base64ToFile(message.file, message.fileName);
-        message.file = f;
-      }
-      if (message.message_ID && message.file) {
-        // http://13.60.35.232:8000/api/message/?message_id=1
-        try {
-          setIsLoading(true)
+      // if (message.file) {
+      //   f = base64ToFile(message.file, message.fileName);
+      //   message.file = f;
+      // }
+      if (message.type === 'chat_message') {
+        if (message.message_ID) {
+          const token = getUserToken();
+          setChatHistory((prevHistory) => ({
+            ...prevHistory,
+            messages: [...prevHistory.messages, message],
+          }));
+        }
+        else {
+          setChatHistory((prevHistory) => ({
+            ...prevHistory,
+            messages: [...prevHistory.messages, message],
+          }));
 
-          const response = await axios.get(`http://13.60.35.232:8000/api/message/?message_id=${message.message_ID}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-
-          if (response.status === 200) {
-            console.log("Message send successfully");
-            const savedMessage = response.data;
-            // setApiResponse(savedMessage)
-
-            setChatHistory((prevHistory) => ({
-              ...prevHistory,
-              messages: [...prevHistory.messages, savedMessage],
-            }));
-          } else {
-            console.error("Failed to send message:", response);
-          }
-        } catch (error) {
-          console.error("Error sending message:", error);
-        } finally {
-          setIsLoading(false);
         }
       }
-      else {
-        setChatHistory((prevHistory) => ({
-          ...prevHistory,
-          messages: [...prevHistory.messages, message],
-        }));
-      }
 
-      // Update chat history with incoming message
-      // setChatHistory((prevHistory) => ({
-      //   ...prevHistory,
-      //   messages: [...prevHistory.messages, message],
-      // }));
-      // setIsLoading(false)
+
     };
 
     ws.current.onclose = () => {
@@ -172,7 +148,6 @@ const Conversation = ({
     // } catch (error) {
     //   console.error('Error sending message:', error);
     // } finally {
-    //   setIsLoading(false);
     // }
   };
 
@@ -184,37 +159,41 @@ const Conversation = ({
       reader.onerror = (error) => reject(error);
     });
 
-  function base64ToFile(base64String, fileName) {
-    // Split the base64 string to get the content type and the actual base64 data
-    const [metadata, base64Data] = base64String.split(";base64,");
-    const contentType = metadata.split(":")[1];
+  // function base64ToFile(base64String, fileName) {
+  //   // Split the base64 string to get the content type and the actual base64 data
+  //   const [metadata, base64Data] = base64String.split(";base64,");
+  //   const contentType = metadata.split(":")[1];
 
-    // Decode the base64 data
-    const byteCharacters = atob(base64Data);
-    const byteNumbers = new Array(byteCharacters.length);
+  //   // Decode the base64 data
+  //   const byteCharacters = atob(base64Data);
+  //   const byteNumbers = new Array(byteCharacters.length);
 
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
+  //   for (let i = 0; i < byteCharacters.length; i++) {
+  //     byteNumbers[i] = byteCharacters.charCodeAt(i);
+  //   }
 
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: contentType });
+  //   const byteArray = new Uint8Array(byteNumbers);
+  //   const blob = new Blob([byteArray], { type: contentType });
 
-    // Create a File object
-    return new File([blob], fileName, { type: contentType });
-  }
+  //   // Create a File object
+  //   return new File([blob], fileName, { type: contentType });
+  // }
 
   const requestChat = () => {
     // if (!chatHistory || !chatHistory.messages || chatHistory.messages.length === 0) {
 
     return (
-      <Box p={3} display='flex' justifyContent='center' height='100%'>
+      <Box p={3} display='flex' justifyContent='center' >
         <Stack spacing={3} alignItems='center'>
-          <Typography variant='h6'>No chat history found.</Typography>
+          {/* <Typography variant='h6'>No chat history found.</Typography> */}
           <Button
             variant='contained'
             color='primary'
-            onClick={onRequestConversation}
+            onClick={() => {
+
+              onRequestConversation(selectedChat)
+
+            }}
           >
             Request Conversation with Therapist
           </Button>
@@ -228,13 +207,13 @@ const Conversation = ({
     // if (!chatHistory || !chatHistory.messages || chatHistory.messages.length === 0) {
 
     return (
-      <Box p={3} display='flex' justifyContent='center' height='100%'>
+      <Box p={3} display='flex' justifyContent='center'>
         <Stack spacing={3} alignItems='center'>
           {/* <Typography variant="h6">No chat history found.</Typography> */}
           <Button
             variant='contained'
             color='primary'
-            onClick={onRequestConversation}
+            onClick={() => { }}
           >
             Accept Conversation Request from Patient
           </Button>
@@ -246,13 +225,14 @@ const Conversation = ({
 
   return (
     <Stack height={"100%"} maxHeight={"100vh"} width={"auto"}>
-      {chatHistory ? <Header selectedChat={chatHistory} user={user} /> : ""}
+      {/* <Header selectedChat={chatHistory} user={user} ws={ws} /> */}
+      {chatHistory ? <Header selectedChat={chatHistory} user={user} ws={ws}/> : ""}
       <Box
         className='scrollbar'
         width={"100%"}
         sx={{ flexGrow: 1, height: "100%", overflowY: "scroll" }}
       >
-        {isLoading && (
+        {isLoading ?
           <Box
             sx={{
               display: "flex",
@@ -263,50 +243,45 @@ const Conversation = ({
           >
             <CircularProgress />
           </Box>
-        )}
-        {chatHistory ? (
-          <Message
-            isLoading={isLoading}
-            userRole={userRole}
-            userId={userId}
-            chatHistory={chatHistory}
-            menu={true}
-            onRequestConversation={onRequestConversation}
-          />
-        ) : (
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "100vh",
-            }}
-          >
-            <Typography variant='h6'>
-              {userRole === "therapist"
-                ? "Select a patient to chat"
-                : "Select a therapist for consultation"}
-            </Typography>
-          </Box>
-        )}
+          :
+          chatHistory ? (
+            <Message
+              isLoading={isLoading}
+              userRole={userRole}
+              userId={userId}
+              chatHistory={chatHistory}
+              menu={true}
+            />
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100vh",
+              }}
+            >
+              <Typography variant='h6'>
+                {userRole === "therapist"
+                  ? "Select a patient to chat"
+                  : "Select a therapist for consultation"}
+              </Typography>
+            </Box>
+          )
+        }
+
       </Box>
       {chatHistory === null || chatHistory.conversationClosed === true ? (
         ""
       ) : chatHistory &&
         chatHistory.messages &&
-        chatHistory.messages.length > 0 ? (
+        chatHistory.messages.length > 0 &&chatHistory.status!==4? (
         <Footer onSendMessage={handleSendMessage} />
       ) : userRole === "therapist" ? (
         acceptChat()
       ) : (
         requestChat()
       )}
-      {/* {<Header selectedChat={chatHistory} user={user} />}
-      <Box className='scrollbar' width={"100%"} sx={{ flexGrow: 1, height: '100%', overflowY: 'scroll' }}>
-        <Message userRole={userRole} userId={userId} chatHistory={chatHistory} menu={true} onRequestConversation={onRequestConversation} />
-
-      </Box>
-      {<Footer onSendMessage={handleSendMessage} />} */}
     </Stack>
   );
 };

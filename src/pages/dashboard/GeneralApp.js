@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Box, Stack } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useSelector } from "react-redux";
@@ -10,11 +10,11 @@ import StarredMessages from "../../components/StarredMessages";
 import { getUserInfo } from "../../services/userservice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { getHandledChat } from "../../services/miscservices";
+import { getHandledChat,changeConversationStatus } from "../../services/miscservices";
 // const dotenv = require("dotenv");
 
 // dotenv.config({ path: ".env" });
-const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMzM5MTI1LCJpYXQiOjE3MjEyNTI3MjUsImp0aSI6ImI2ZmQzMWFkNDA5ZDQ2M2U4NzQ2MzgwOTQ1NGYwMDNiIiwidXNlcl9pZCI6NX0.pfeeFPuwJk9t9BsajwMZgOHOOx7T1lS30egA6J1nkOs"
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzIxMzM5MTI1LCJpYXQiOjE3MjEyNTI3MjUsImp0aSI6ImI2ZmQzMWFkNDA5ZDQ2M2U4NzQ2MzgwOTQ1NGYwMDNiIiwidXNlcl9pZCI6NX0.pfeeFPuwJk9t9BsajwMZgOHOOx7T1lS30egA6J1nkOs"
 
 // import ChatRequests from "../../components/ChatRequests";
 
@@ -28,7 +28,10 @@ const GeneralApp = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
+  let ws = useRef(null);
+
   useEffect(() => {
+
     const storedUser = getUserInfo();
     if (storedUser) {
       setUserRole(storedUser.role);
@@ -37,7 +40,26 @@ const GeneralApp = () => {
     }
   }, []);
 
-  const handleRequestConversation = () => {};
+  const handleRequestConversation =async (selectedChat) => {
+
+
+    const eventData = {
+      type: 'request_conversation',
+      conversationId: selectedChat.id,
+      senderId: selectedChat.parent,
+      receiverId: selectedChat.therapist,
+      username:user?.username
+    };
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      ws.current.send(JSON.stringify(eventData));
+    const response = await changeConversationStatus(selectedChat.id,2);
+
+    } else {
+      console.error("WebSocket connection not established");
+    }
+    // ws.currentsocket.emit('message', eventData);
+
+  };
 
   const handleChatSelection = async (chat) => {
     const response = await getHandledChat(chat);
@@ -78,7 +100,8 @@ const GeneralApp = () => {
           userId={userId}
           selectedChat={selectedChat}
           onRequestConversation={handleRequestConversation}
-          // isAwaitingApproval={isAwaitingApproval}
+          ws={ws}
+        // isAwaitingApproval={isAwaitingApproval}
         />
       </Box>
       {/* Contact */}

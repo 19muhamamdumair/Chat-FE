@@ -10,7 +10,18 @@ export const getAllTherapist = () => {
         Authorization: `Bearer ${token}`,
       },
     });
-  } catch (error) {}
+  } catch (error) { }
+};
+
+export const getAllParents = () => {
+  try {
+    const token = getUserToken();
+    return axios.get(`${BASE_URL}get_all_parents/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  } catch (error) { }
 };
 export const getHandledChat = (chat) => {
   try {
@@ -20,13 +31,50 @@ export const getHandledChat = (chat) => {
         Authorization: `Bearer ${token}`,
       },
     });
-  } catch (error) {}
+  } catch (error) { }
 };
+
+export const changeConversationStatus = async (conversationId, status) => {
+  try {
+    const token = getUserToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+    const body = {
+      conversation_id: conversationId,
+      status: status,
+    };
+    const response = await axios.post(`${BASE_URL}change_conversation_status/`, body, { headers });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const postMessage = async (content, conversation, sender) => {
+  try {
+    const token = getUserToken();
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+    const body = {
+      content: content,
+      conversation: conversation,
+      sender: sender
+    };
+    const response = await axios.post(`${BASE_URL}messages/`, body, { headers });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export const loginRequest = (credentials) => {
   try {
     return axios.post(`${BASE_URL}sign_in`, credentials);
-  } catch (error) {}
+  } catch (error) { }
 };
 
 export const messageRequest = (message) => {
@@ -39,17 +87,26 @@ export const messageRequest = (message) => {
         "Content-Type": "multipart/form-data",
       },
     });
-  } catch (error) {}
+  } catch (error) { }
 };
 
-export const getConversations = () => {
+export const getConversations = async () => {
+
   try {
     const token = getUserToken();
 
-    return axios.get(`${BASE_URL}conversations/`, {
+
+    let response = await axios.get(`${BASE_URL}conversations/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-  } catch (error) {}
+
+    return response
+    // console.log(data)
+  } catch (error) {
+
+    console.log(error);
+
+  }
 };

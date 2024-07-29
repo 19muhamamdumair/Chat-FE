@@ -3,7 +3,7 @@ import { Avatar, Badge, Box, Stack, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import StyledBadge from "./StyledBadge";
 
-const ChatElement = ({ userRole, id, status, therapist, parent, onClick }) => {
+const ChatElement = ({ userRole, id, status, therapist, parent,username, onClick }) => {
   // const ChatElement = ({ id, name, img, msg, time, online, unread, onClick }) => {
   const theme = useTheme();
   return (
@@ -28,7 +28,8 @@ const ChatElement = ({ userRole, id, status, therapist, parent, onClick }) => {
           <Stack spacing={0.3}>
             <Typography variant='subtitle2'>
               {/* {name} */}
-              {userRole === "therapist" ? parent : therapist}
+              {/* {userRole === "therapist" ? parent : therapist} */}
+              {username}
             </Typography>
             <Typography variant='caption'>{/* {msg} */}</Typography>
           </Stack>

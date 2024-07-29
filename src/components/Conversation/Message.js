@@ -15,35 +15,35 @@ import {
   TimeLine,
 } from "./MsgTypes";
 
-const Message = ({isLoading, chatHistory, menu, onRequestConversation,userId,userRole }) => {
+const Message = ({isLoading, chatHistory, menu,userId,userRole }) => {
 
 
-  if (
-    !chatHistory ||
-    !chatHistory.messages ||
-    chatHistory.messages.length === 0
-  ) {
-    return (
-      <Box
-        p={3}
-        display='flex'
-        justifyContent='center'
-        alignItems='center'
-        height='100%'
-      >
-        <Stack spacing={3} alignItems='center'>
-          <Typography variant='h6'>No chat history found.</Typography>
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={onRequestConversation}
-          >
-            Request Conversation with Therapist
-          </Button>
-        </Stack>
-      </Box>
-    );
-  }
+  // if (
+  //   !chatHistory ||
+  //   !chatHistory.messages ||
+  //   chatHistory.messages.length === 0
+  // ) {
+  //   return (
+  //     <Box
+  //       p={3}
+  //       display='flex'
+  //       justifyContent='center'
+  //       alignItems='center'
+  //       height='100%'
+  //     >
+  //       <Stack spacing={3} alignItems='center'>
+  //         <Typography variant='h6'>No chat history found.</Typography>
+  //         <Button
+  //           variant='contained'
+  //           color='primary'
+  //           onClick={onRequestConversation}
+  //         >
+  //           Request Conversation with Therapist
+  //         </Button>
+  //       </Stack>
+  //     </Box>
+  //   );
+  // }
 
   return (
     <Box p={3}>

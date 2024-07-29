@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Box, IconButton, Stack, Typography } from "@mui/material";
+import { Box, CircularProgress, IconButton, Stack, Typography } from "@mui/material";
 import { CircleDashed, MagnifyingGlass } from "phosphor-react";
 import { useTheme } from "@mui/material/styles";
 import {
@@ -10,7 +10,7 @@ import {
 } from "../../components/Search";
 import ChatElement from "../../components/ChatElement";
 import { getUserInfo } from "../../services/userservice";
-import { getAllTherapist, getConversations } from "../../services/miscservices";
+import { getAllParents, getAllTherapist, getConversations } from "../../services/miscservices";
 import modifiedListTherapist from "../../helper/usersListAlter";
 // const dotenv = require("dotenv");
 
@@ -25,11 +25,15 @@ const Chats = ({ setSelectedChat }) => {
 
   const [userRole, setUserRole] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchConversations = async () => {
       try {
+        setIsLoading(true);
+
         const response = await getConversations();
+
 
         const storedUser = getUserInfo();
 
@@ -46,17 +50,39 @@ const Chats = ({ setSelectedChat }) => {
           return false;
         });
 
-        console.log("54", filteredConversations);
-        console.log("55", storedUser.role);
         if (storedUser.role === "parent") {
           const allTherapist = await getAllTherapist();
           console.log("69", allTherapist.data);
-          const modifiedConversations = modifiedListTherapist(
-            allTherapist.data,
-            filteredConversations
-          );
-          console.log("modifiedConversations", modifiedConversations);
+          filteredConversations.map((conv) => {
+            let therapist = conv.therapist;
+            let tData = allTherapist.data.find(t => t.user_id === therapist);
+            conv.username = tData.username ? tData.username : "";
+
+          })
+          console.log("modifiedConversations", filteredConversations);
           setConversations(filteredConversations);
+          setIsLoading(false);
+          // setIsLoading(false);
+
+        } else {
+          const allParents = await getAllParents();
+          // const convObject={
+          //   id:'',
+          //   parent:'',
+          //   therapist:'',
+          //   status:'',
+          //   username
+          // }
+          filteredConversations.map((conv) => {
+            let parent = conv.parent;
+            let pData = allParents.data.find(p => p.user_id === parent);
+            conv.username = pData.username ? pData.username : "";
+
+          })
+          console.log("modifiedConversations", filteredConversations);
+          setConversations(filteredConversations);
+          setIsLoading(false);
+
         }
 
         //getparent or getTherapist
@@ -66,9 +92,10 @@ const Chats = ({ setSelectedChat }) => {
     };
 
     fetchConversations();
-  }, [userRole, userId]); // Include userRole and userId in dependency array
+  }, []); // Include userRole and userId in dependency array
 
   return (
+
     <Box
       sx={{
         position: "relative",
@@ -80,6 +107,7 @@ const Chats = ({ setSelectedChat }) => {
         boxShadow: "0px 0px 2px rgba(0,0,0,0.25)",
       }}
     >
+
       <Stack p={3} spacing={2} sx={{ height: "100vh" }}>
         <Stack
           direction='row'
@@ -110,17 +138,45 @@ const Chats = ({ setSelectedChat }) => {
           direction='column'
           sx={{ flexGrow: 1, overflow: "scroll", height: "100%" }}
         >
+          {isLoading && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          )}
           <Stack spacing={2.4}>
-            {userRole === "therapist" &&
+            {/* {userRole === "therapist" &&
               conversations.filter((el) => el.status === 2).length > 0 && (
                 <Typography variant='subtitle2' sx={{ color: "#676767" }}>
                   Requests
                 </Typography>
-              )}
+              )} */}
+
+            {/* {userRole === "therapist" &&
+              conversations
+                .filter((el) => el.status === 2)
+                .map((el) => (
+                  <ChatElement
+                    userRole={userRole}
+                    key={el.id}
+                    {...el}
+                    onClick={() => setSelectedChat(el)}
+                  />
+                ))} */}
+
+            <Typography variant='subtitle2' sx={{ color: "#676767" }}>
+              {userRole === "parent" ? "All Therapists" : "All Patients"}
+            </Typography>
 
             {userRole === "therapist" &&
               conversations
-                .filter((el) => el.status === 4)
+                .filter((el) => el.status === 1 || el.status === 2 || el.status===4)
                 .map((el) => (
                   <ChatElement
                     userRole={userRole}
@@ -130,9 +186,19 @@ const Chats = ({ setSelectedChat }) => {
                   />
                 ))}
 
-            <Typography variant='subtitle2' sx={{ color: "#676767" }}>
-              {userRole === "parent" ? "All Therapists" : "All Patients"}
-            </Typography>
+            {userRole === "parent" &&
+              conversations
+                .filter((el) => el.status === 1 || el.status === 2 ||el.status===4)
+                .map((el) => (
+                  <ChatElement
+                    userRole={userRole}
+                    key={el.id}
+                    {...el}
+                    onClick={() => setSelectedChat(el)}
+                  />
+                ))}
+
+
           </Stack>
         </Stack>
       </Stack>
