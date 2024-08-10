@@ -61,7 +61,9 @@ export const defaultLang = allLangs[0]; // English
 // DEFAULT ROOT PATH
 export const DEFAULT_PATH = PATH_DASHBOARD.general.app; // as '/app'
 export const BASE_URL = "http://13.48.27.232:8000/api/";
-export const SOCKET_BASE_URL = "ws://13.48.27.232:5000";
+// export const BASE_URL = "http://127.0.0.1:8000/api/";
+
+export const SOCKET_BASE_URL = "http://127.0.0.1:8000";
 
 
 // http://13.48.27.232:5000
